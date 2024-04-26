@@ -1,16 +1,22 @@
+![RISC-V Sophgo SG2000](https://lupyuen.github.io/images/sg2000-soc.jpg)
+
 # Apache NuttX RTOS on 64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)
 
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
-Source: https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/
+https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/
 
 Let's find out! Connect our USB UART Dongle like so...
 
 https://milkv.io/docs/duo/getting-started/duos
 
+![Milk-V Duo S](https://lupyuen.github.io/images/sg2000-board.jpg)
+
 USB UART Dongle must be CP2102, it doesn't like CH340G 😬
 
-Flip the switch so it's set to "RV" (RISC-V) instead of "Arm"
+Flip the switch so it's set to "RV" (RISC-V) instead of "Arm"...
+
+![Switch to "RV" (RISC-V) instead of "Arm"](https://lupyuen.github.io/images/sg2000-switch.jpg)
 
 Power up via the USB-C Port. We should see in RISC-V Mode...
 
