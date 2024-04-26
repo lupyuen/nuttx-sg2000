@@ -50,6 +50,6 @@ Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't 
 
 TODO: Boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
-We pick the Latest Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/tag/v1.1.0
+We pick the Latest Release for Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
 
 TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
