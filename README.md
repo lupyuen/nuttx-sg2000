@@ -48,6 +48,8 @@ https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
 Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't boot NuttX over TFTP, our NuttX Porting will be a bit slower. Bummer :-(
 
-TODO: Boot with U-Boot or Linux on MicroSD
+TODO: Boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
-TODO: Get the eMMC Version with U-Boot preinstalled
+We pick the Latest Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/tag/v1.1.0
+
+TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
