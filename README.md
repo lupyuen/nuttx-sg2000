@@ -53,6 +53,10 @@ Let's boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-s
 We pick the Latest Release for Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
 
 ```bash
+$ brew install lz4
+$ lz4 ~/Downloads/duos_sd.img.lz4
+## TODO: Write duos_sd.img to MicroSD with Balena Etcher
+
 → ls -l /Volumes/boot
 total 17488
 -rwxrwxrwx  1 Luppy  staff  3494900 Apr 24 11:33 System.map-5.10.4-20240329-1+
