@@ -108,4 +108,60 @@ label l0r
 	append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 ```
 
+Yep Linux boots OK!
+
+https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a
+
+```bash
+OpenSBI v0.9
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : Milk-V DuoS
+Platform Features         : mfdeleg
+Platform HART Count       : 1
+Platform IPI Device       : clint
+Platform Timer Device     : clint
+Platform Console Device   : uart8250
+Platform HSM Device       : ---
+Platform SysReset Device  : ---
+Firmware Base             : 0x80000000
+Firmware Size             : 132 KB
+Runtime SBI Version       : 0.3
+
+Domain0 Name              : root
+Domain0 Boot HART         : 0
+Domain0 HARTs             : 0*
+Domain0 Region00          : 0x0000000074000000-0x000000007400ffff (I)
+Domain0 Region01          : 0x0000000080000000-0x000000008003ffff ()
+Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000080200020
+Domain0 Next Arg1         : 0x0000000080080000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+
+Boot HART ID              : 0
+Boot HART Domain          : root
+Boot HART ISA             : rv64imafdcvsux
+Boot HART Features        : scounteren,mcounteren,time
+Boot HART PMP Count       : 16
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 38
+Boot HART MHPM Count      : 8
+Boot HART MHPM Count      : 8
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+...
+Debian GNU/Linux trixie/sid duos ttyS0
+duos login: 
+```
+
+TODO: Dump the U-Boot Config
+
 TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
