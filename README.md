@@ -48,7 +48,7 @@ https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
 Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't boot NuttX over TFTP, our NuttX Porting will be a bit slower. Bummer :-(
 
-TODO: Boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
+Let's boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
 We pick the Latest Release for Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
 
@@ -75,7 +75,7 @@ total 44
 -rwxrwxrwx  1 Luppy  staff  21575 Apr 24 11:33 cv181x_milkv_duos_sd.dtb
 ```
 
-Boot Config:
+Here's the Boot Config...
 
 ```bash
 → cat /Volumes/boot/extlinux/extlinux.conf
@@ -108,7 +108,7 @@ label l0r
 	append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 ```
 
-Yep Linux boots OK!
+Yep Linux boots OK on Milk-V Duo S!
 
 https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a
 
@@ -162,6 +162,86 @@ Debian GNU/Linux trixie/sid duos ttyS0
 duos login: 
 ```
 
-TODO: Dump the U-Boot Config
+Let's dump the U-Boot Config...
+
+https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2
+
+```bash
+U-Boot 2021.10-ga57aa1f2-dirty (Apr 24 2024 - 11:24:46 +0000) cvitek_cv181x
+
+DRAM:  510 MiB
+gd->relocaddr=0x9fbc7000. offset=0x1f9c7000
+set_rtc_register_for_power
+MMC:   cv-sd@4310000: 0, wifi-sd@4320000: 1
+Loading Environment from nowhere... OK
+In:    serial
+Out:   serial
+Err:   serial
+Net:   
+Warning: ethernet@4070000 (eth0) using random MAC address - 82:c2:1a:b2:ee:b5
+eth0: ethernet@4070000
+Hit any key to stop autoboot:  0
+cv181x_c906# 
+cv181x_c906# printenv
+arch=riscv
+baudrate=115200
+board=mars
+board_name=mars
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+boot_efi_binary=load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} efi/boot/bootriscv64.efi; if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r};else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi
+boot_efi_bootmgr=if fdt addr ${fdt_addr_r}; then bootefi bootmgr ${fdt_addr_r};else bootefi bootmgr;fi
+boot_extlinux=sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}${boot_syslinux_conf}
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+boot_syslinux_conf=extlinux/extlinux.conf
+boot_targets=mmc0 dhcp pxe 
+bootcmd=run distro_bootcmd || run sdboot || run sdbootauto
+bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; setenv efi_old_vci ${bootp_vci};setenv efi_old_arch ${bootp_arch};setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;setenv bootp_arch 0x1b;if dhcp ${kernel_addr_r}; then tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r}; else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi;fi;setenv bootp_vci ${efi_old_vci};setenv bootp_arch ${efi_old_arch};setenv efi_fdtfile;setenv efi_old_arch;setenv efi_old_vci;
+bootcmd_mmc0=devnum=0; run mmc_boot
+bootcmd_pxe=dhcp; if pxe get; then pxe boot; fi
+bootdelay=1
+consoledev=ttyS0
+cpu=generic
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+efi_dtb_prefixes=/ /dtb/ /dtb/current/
+fdt_addr_r=0x81200000
+fdtcontroladdr=9f280810
+fdtfile=cv181x_milkv_duos_sd.dtb
+fdtoverlay_addr_r=0x81300000
+gatewayip=192.168.0.11
+ipaddr=192.168.0.3
+kernel_addr_r=0x80200000
+kernel_comp_addr_r=0x81800000
+kernel_comp_size=0x1000000
+load_efi_dtb=load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}${efi_fdtfile}
+mmc_boot=if mmc dev ${devnum}; then devtype=mmc; run scan_dev_for_boot_part; fi
+netdev=eth0
+netmask=255.255.255.0
+othbootargs=earlycon=sbi riscv.fwsz=0x80000   loglevel=9
+pxefile_addr_r=0x81400000
+ramdisk_addr_r=0x81600000
+root=root=/dev/mmcblk0p2 rootwait rw
+scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;run scan_dev_for_efi;
+scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; then run scan_dev_for_boot; fi; done; setenv devplist
+scan_dev_for_efi=setenv efi_fdtfile ${fdtfile}; for prefix in ${efi_dtb_prefixes}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${efi_fdtfile}; then run load_efi_dtb; fi;done;run boot_efi_bootmgr;if test -e ${devtype} ${devnum}:${distro_bootpart} efi/boot/bootriscv64.efi; then echo Found EFI removable media binary efi/boot/bootriscv64.efi; run boot_efi_binary; echo EFI LOAD FAILED: continuing...; fi; setenv efi_fdtfile
+scan_dev_for_extlinux=if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${boot_syslinux_conf}; then echo Found ${prefix}${boot_syslinux_conf}; run boot_extlinux; echo SCRIPT FAILED: continuing...; fi
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${script}; run boot_a_script; echo SCRIPT FAILED: continuing...; fi; done
+scriptaddr=0x81500000
+sdboot=setenv bootargs ${reserved_mem} ${root} ${mtdparts} console=$consoledev,$baudrate $othbootargs;echo Boot from SD dev ${sddev} ...;mmc dev ${sddev} && fatload mmc ${sddev} ${uImage_addr} boot.sd;if test $? -eq 0; then bootm ${uImage_addr}#config-cv181x_milkv_duos_sd;fi;
+sdbootauto=cvi_sd_boot;setenv bootargs ${reserved_mem} ${root} ${mtdparts} console=$consoledev,$baudrate $othbootargs;echo Boot from SD dev ${sddev} auto ...;mmc dev ${sddev} && fatload mmc ${sddev} ${uImage_addr} boot.sd;if test $? -eq 0; then bootm ${uImage_addr}#config-cv181x_milkv_duos_sd;fi;
+sddev=0
+serverip=192.168.56.101
+stderr=serial
+stdin=serial
+stdout=serial
+uImage_addr=0x81800000
+update_addr=0x9fe00000
+vendor=cvitek
+
+Environment size: 4333/131068 bytes
+```
+
+Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!
 
 TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
