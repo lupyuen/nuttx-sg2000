@@ -254,6 +254,8 @@ Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over T
 
 TODO: Boot NuttX over TFTP
 
+TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
+
 TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
 
 Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
