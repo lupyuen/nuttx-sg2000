@@ -48,9 +48,13 @@ https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
 Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't boot NuttX over TFTP, our NuttX Porting will be a bit slower. Bummer :-(
 
-Let's boot with U-Boot + Linux on MicroSD: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
+Let's boot with U-Boot + Linux on MicroSD:
 
-We pick the Latest Release for Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
+https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
+
+We pick the Latest Release for Duo S:
+
+https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
 
 ```bash
 $ brew install lz4
@@ -248,4 +252,8 @@ Environment size: 4333/131068 bytes
 
 Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!
 
+TODO: Boot NuttX over TFTP
+
 TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
+
+Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
