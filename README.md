@@ -252,6 +252,100 @@ Environment size: 4333/131068 bytes
 
 Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!
 
+Here are the U-Boot Commands...
+
+```bash
+cv181x_c906# help
+
+?         - alias for 'help'
+base      - print or set address offset
+bdinfo    - print Board Info structure
+blkcache  - block cache diagnostics and control
+boot      - boot default, i.e., run 'bootcmd'
+bootd     - boot default, i.e., run 'bootcmd'
+bootefi   - Boots an EFI payload from memory
+bootelf   - Boot from an ELF image in memory
+booti     - boot Linux kernel 'Image' format from memory
+bootm     - boot application image from memory
+bootp     - boot image via network using BOOTP/TFTP protocol
+bootvx    - Boot vxWorks from an ELF image
+cmp       - memory compare
+cp        - memory copy
+cpu       - display information about CPUs
+cvi_sd_boot- boot from SD card
+cvi_update- cvi_update [eth, sd, usb]- check boot status and update if necessary
+
+cvi_utask - bootloader control block command
+dcache    - enable or disable data cache
+dhcp      - boot image via network using DHCP/TFTP protocol
+echo      - echo args to console
+efuser    - Read efuse
+efuser_dump- Read/Dump efuse
+efusew    - Write efuse
+efusew_word- Write word to efuse
+env       - environment handling commands
+erase     - erase FLASH memory
+exit      - exit script
+ext2load  - load binary file from a Ext2 filesystem
+ext2ls    - list files in a directory (default /)
+ext4load  - load binary file from a Ext4 filesystem
+ext4ls    - list files in a directory (default /)
+ext4size  - determine a file's size
+false     - do nothing, unsuccessfully
+fatinfo   - print information about filesystem
+fatload   - load binary file from a dos filesystem
+fatls     - list files in a directory (default /)
+fatmkdir  - create a directory
+fatrm     - delete a file
+fatsize   - determine a file's size
+fatwrite  - write file into a dos filesystem
+fdt       - flattened device tree utility commands
+flinfo    - print FLASH memory information
+fstype    - Look up a filesystem type
+fstypes   - List supported filesystem types
+go        - start application at address 'addr'
+help      - print command description/usage
+icache    - enable or disable instruction cache
+iminfo    - print header information for application image
+ln        - Create a symbolic link
+load      - load binary file from a filesystem
+loadb     - load binary file over serial line (kermit mode)
+loadx     - load binary file over serial line (xmodem mode)
+loady     - load binary file over serial line (ymodem mode)
+loop      - infinite loop on address range
+ls        - list files in a directory (default /)
+md        - memory display
+mdio      - MDIO utility commands
+mii       - MII utility commands
+mm        - memory modify (auto-incrementing address)
+mmc       - MMC sub system
+mmcinfo   - display MMC info
+mw        - memory write (fill)
+net       - NET sub-system
+nfs       - boot image via network using NFS protocol
+nm        - memory modify (constant address)
+panic     - Panic with optional message
+part      - disk partition related commands
+ping      - send ICMP ECHO_REQUEST to network host
+printenv  - print environment variables
+protect   - enable or disable FLASH write protection
+pxe       - commands to get and boot from pxe
+reset     - Perform RESET of the CPU
+run       - run commands in an environment variable
+save      - save file to a filesystem
+setenv    - set environment variables
+setexpr   - set environment variable as the result of eval expression
+showvar   - print local hushshell variables
+size      - determine a file's size
+sleep     - delay execution for some time
+source    - run script from memory
+sysboot   - command to get and boot from syslinux files
+test      - minimal test like /bin/sh
+tftpboot  - boot image via network using TFTP protocol
+true      - do nothing, successfully
+version   - print monitor, compiler and linker version
+```
+
 TODO: Boot NuttX over TFTP
 
 TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
