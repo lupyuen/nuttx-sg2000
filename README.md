@@ -4,9 +4,19 @@
 
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
-https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/
+- [SG2000 Overview](https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/)
 
-Let's find out! Connect our USB UART Dongle like so...
+- [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
+
+Let's find out!
+
+_Is this a sponsored review?_
+
+I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?
+
+# Boot Milk-V Duo S without MicroSD
+
+Connect our USB UART Dongle like so...
 
 https://milkv.io/docs/duo/getting-started/duos
 
@@ -42,17 +52,21 @@ B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
 
 Nope we're in Arm Mode! Flip the switch back to RISC-V!
 
-If we use CH340G: UART Output will be garbled...
+If we use CH340G: UART Output will be garbled (happens on Linux and macOS, maybe Windows too)...
 
 https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
 Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't boot NuttX over TFTP, our NuttX Porting will be a bit slower. Bummer :-(
 
-Let's boot with U-Boot + Linux on MicroSD:
+TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
+
+# Boot Linux on Milk-V Duo S
+
+Let's boot Linux on MicroSD...
 
 https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
-We pick the Latest Release for Duo S:
+We pick the Latest Release for Milk-V Duo S...
 
 https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
 
@@ -116,7 +130,7 @@ label l0r
 	append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 ```
 
-Yep Linux boots OK on Milk-V Duo S!
+Yep Linux boots OK on Milk-V Duo S! (Together with OpenSBI and U-Boot Bootloader)
 
 https://gist.github.com/lupyuen/01d409b7bde9607a96cd4d460e53330a
 
@@ -259,6 +273,31 @@ cv181x_c906# net list
 eth0 : ethernet@4070000 00:00:00:00:00:00 active
 ```
 
+(See below for the U-Boot Commands)
+
+Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
+
+TODO: Boot NuttX over TFTP
+
+# UART Controller for SG2000
+
+According to the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases), the UART Controller Base Addresses are...
+
+| GPIO Module | Base Address |
+|-------------|--------------|
+| UART0 | 0x04140000 |
+| UART1 | 0x04150000 |
+| UART2 | 0x04160000 |
+| UART3 | 0x04170000 |
+| UART4 | 0x041C0000 |
+| RTCSYS_UART | 0x05022000 |
+
+We'll print to UART0 in NuttX.
+
+TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
+
+# U-Boot Commands for Milk-V Duo S
+
 Here are the U-Boot Commands...
 
 ```bash
@@ -352,13 +391,3 @@ tftpboot  - boot image via network using TFTP protocol
 true      - do nothing, successfully
 version   - print monitor, compiler and linker version
 ```
-
-TODO: Boot NuttX over TFTP
-
-TODO: Is Ethernet Driver working?
-
-TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
-
-TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
-
-Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
