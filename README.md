@@ -189,8 +189,9 @@ Net:
 Warning: ethernet@4070000 (eth0) using random MAC address - 82:c2:1a:b2:ee:b5
 eth0: ethernet@4070000
 Hit any key to stop autoboot:  0
-cv181x_c906# 
+
 cv181x_c906# printenv
+
 arch=riscv
 baudrate=115200
 board=mars
@@ -251,6 +252,12 @@ Environment size: 4333/131068 bytes
 ```
 
 Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!
+
+```bash
+cv181x_c906# net list
+
+eth0 : ethernet@4070000 00:00:00:00:00:00 active
+```
 
 Here are the U-Boot Commands...
 
@@ -347,6 +354,8 @@ version   - print monitor, compiler and linker version
 ```
 
 TODO: Boot NuttX over TFTP
+
+TODO: Is Ethernet Driver working?
 
 TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
 
