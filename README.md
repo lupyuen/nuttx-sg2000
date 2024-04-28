@@ -279,50 +279,123 @@ Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
 
 # Boot Milk-V Duo S over TFTP 
 
-Here are the steps to boot Milk-V Duo S over TFTP...
+We'll port NuttX by booting over TFTP, but let's test TFTP first. Here are the steps to boot Milk-V Duo S over TFTP...
 
 https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp
 
 ```bash
-## U-Boot tftpserver
+## Set U-Boot TFTP Server
 setenv tftp_server 192.168.31.10
 printenv tftp_server
-saveenv
 
+## Set RAM Disk Size (assume the max)
+setenv ramdisk_size 0x1000000
+printenv ramdisk_size
+
+## TODO: saveenv doesn't exist, can't save Environment Variables!
+## TODO: Update the Boot Config in MicroSD instead
+## saveenv
+
+## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
-## kernel_addr_r=0x40200000
+## kernel_addr_r=0x80200000
 ## tftp_server=192.168.x.x
-if tftpboot ${kernel_addr_r} ${tftp_server}:Image;
-then
+## TODO: Fix the NuttX Image
+dhcp ${kernel_addr_r} ${tftp_server}:Image
 
-  ## Load the Device Tree from TFTP Server
-  ## fdt_addr_r=0x46000000
-  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb;
-  then
+## Load the Device Tree from TFTP Server
+## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 
-    ## Set the RAM Address of Device Tree
-    ## fdt_addr_r=0x46000000
-    if fdt addr ${fdt_addr_r};
-    then
+## Set the RAM Address of Device Tree
+## fdt_addr_r=0x81200000
+fdt addr ${fdt_addr_r}
 
-      ## Load the Intial RAM Disk from TFTP Server
-      ## ramdisk_addr_r=0x46100000
-      if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd;
-      then
+## Load the Intial RAM Disk from TFTP Server
+## ramdisk_addr_r=0x81600000
+## TODO: Fix the Initial RAM Disk
+tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 
-        ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
-        ## kernel_addr_r=0x40200000
-        ## ramdisk_addr_r=0x46100000
-        ## ramdisk_size=0x1000000
-        ## fdt_addr_r=0x46000000
-        booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r};
-      fi;
-    fi;
-  fi;
-fi
+## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+## kernel_addr_r=0x80200000
+## ramdisk_addr_r=0x81600000
+## ramdisk_size=0x1000000
+## fdt_addr_r=0x81200000
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
-TODO: What happens?
+_What happens when we run this?_
+
+```bash
+cv181x_c906# setenv tftp_server 192.168.31.10
+cv181x_c906# printenv tftp_server
+tftp_server=192.168.31.10
+
+cv181x_c906# setenv ramdisk_size 0x1000000
+cv181x_c906# printenv ramdisk_size
+ramdisk_size=0x1000000
+
+cv181x_c906# dhcp ${kernel_addr_r} ${tftp_server}:Image
+Speed: 100, full duplex
+BOOTP broadcast 1
+BOOTP broadcast 2
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.31.47 (550 ms)
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.47
+Filename 'Image'.
+Load address: 0x80200000
+Loading: #################################################################
+. #################################################################
+. #############
+. 1.2 MiB/s
+done
+Bytes transferred = 2097800 (200288 hex)
+
+cv181x_c906# tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+Speed: 100, full duplex
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.47
+Filename 'jh7110-star64-pine64.dtb'.
+Load address: 0x81200000
+Loading: ####
+. 1.1 MiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+
+cv181x_c906# fdt addr ${fdt_addr_r}
+
+cv181x_c906# tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+Speed: 100, full duplex
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.47
+Filename 'initrd'.
+Load address: 0x81600000
+Loading: #################################################################
+. #################################################################
+. #################################################################
+. #################################################################
+. #################################################################
+. #################################################################
+. #################################################################
+. #################################################################
+. ##################################################
+. 1.2 MiB/s
+done
+Bytes transferred = 8354816 (7f7c00 hex)
+
+cv181x_c906# booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
+   Loading Device Tree to 000000009e26f000, end 000000009e27e43a ... OK
+
+Starting kernel ...
+```
+
+NuttX Kernel hangs, but that's OK! We haven't modified NuttX Kernel for SG2000 yet. Let's fix this...
 
 # Boot Apache NuttX RTOS over TFTP
 
