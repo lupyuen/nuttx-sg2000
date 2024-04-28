@@ -277,7 +277,56 @@ eth0 : ethernet@4070000 00:00:00:00:00:00 active
 
 Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
 
-TODO: Boot NuttX over TFTP
+# Boot Milk-V Duo S over TFTP 
+
+Here are the steps to boot Milk-V Duo S over TFTP...
+
+https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp
+
+```bash
+## U-Boot tftpserver
+setenv tftp_server 192.168.31.10
+printenv tftp_server
+saveenv
+
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x40200000
+## tftp_server=192.168.x.x
+if tftpboot ${kernel_addr_r} ${tftp_server}:Image;
+then
+
+  ## Load the Device Tree from TFTP Server
+  ## fdt_addr_r=0x46000000
+  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb;
+  then
+
+    ## Set the RAM Address of Device Tree
+    ## fdt_addr_r=0x46000000
+    if fdt addr ${fdt_addr_r};
+    then
+
+      ## Load the Intial RAM Disk from TFTP Server
+      ## ramdisk_addr_r=0x46100000
+      if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd;
+      then
+
+        ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+        ## kernel_addr_r=0x40200000
+        ## ramdisk_addr_r=0x46100000
+        ## ramdisk_size=0x1000000
+        ## fdt_addr_r=0x46000000
+        booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r};
+      fi;
+    fi;
+  fi;
+fi
+```
+
+TODO: What happens?
+
+# Boot Apache NuttX RTOS over TFTP
+
+TODO
 
 # UART Controller for SG2000
 
