@@ -585,6 +585,8 @@ Earlier we have...
 
 Let's boot NuttX over TFTP, with a little help from U-Boot Bootloader! Run these commands at the U-Boot Command Prompt...
 
+https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d
+
 ```bash
 ## TODO: Change to your TFTP Server IP Address
 $ setenv tftp_server 192.168.31.10
