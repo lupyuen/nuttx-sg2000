@@ -591,6 +591,7 @@ https://gist.github.com/lupyuen/78b54326daf0894a2c23ab6d2c03456d
 ## TODO: Change to your TFTP Server IP Address
 $ setenv tftp_server 192.168.31.10
 
+## Download NuttX Image from TFTP Server
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 Speed: 100, full duplex
 BOOTP broadcast 1
@@ -607,6 +608,7 @@ Loading: #################################################################
 done
 Bytes transferred = 14195281 (d89a51 hex)
 
+## TODO: NuttX doesn't need the Device Tree. Remove this.
 $ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Speed: 100, full duplex
 Using ethernet@4070000 device
@@ -618,17 +620,20 @@ Loading: ####
 done
 Bytes transferred = 50235 (c43b hex)
 
+## TODO: NuttX doesn't need the Device Tree. Remove this.
 $ fdt addr ${fdt_addr_r}
 ```
 
 NuttX boots a tiny bit, and prints `123` yay!
 
 ```bash
+## Boot NuttX from RAM
 $ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+
 ## Flattened Device Tree blob at 81200000
-   Booting using the fdt blob at 0x81200000
-   Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
-   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+Booting using the fdt blob at 0x81200000
+Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
 
 Starting kernel ...
 123
