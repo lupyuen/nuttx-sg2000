@@ -455,15 +455,6 @@ Which will print `123` when NuttX boots. Let's build and test this!
 Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S...
 
 ```bash
-## Download WIP NuttX for SG2000 (based on Ox64 BL808)
-git clone --branch sg2000 \
-  https://github.com/lupyuen2/wip-nuttx \
-  nuttx
-git clone --branch sg2000 \
-  https://github.com/lupyuen2/wip-nuttx-apps \
-  apps
-cd nuttx
-
 ## TODO: Set PATH
 export PATH="$HOME/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin:$PATH"
 
@@ -500,6 +491,15 @@ function build_apps {
   popd
 }
 
+## Download WIP NuttX for SG2000 (based on Ox64 BL808)
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx \
+  nuttx
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx-apps \
+  apps
+cd nuttx
+
 ## Pull updates
 git pull && git status && hash1=`git rev-parse HEAD`
 pushd ../apps
@@ -508,7 +508,7 @@ popd
 echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
 echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
 
-## Show the versions of GCC and Zig
+## Show the version of GCC
 riscv64-unknown-elf-gcc -v
 
 ## Configure build
