@@ -204,7 +204,7 @@ Warning: ethernet@4070000 (eth0) using random MAC address - 82:c2:1a:b2:ee:b5
 eth0: ethernet@4070000
 Hit any key to stop autoboot:  0
 
-cv181x_c906# printenv
+$ printenv
 
 arch=riscv
 baudrate=115200
@@ -268,7 +268,7 @@ Environment size: 4333/131068 bytes
 Aha Ethernet Driver is available in U-Boot. Which means we can boot NuttX over TFTP yay!
 
 ```bash
-cv181x_c906# net list
+$ net list
 
 eth0 : ethernet@4070000 00:00:00:00:00:00 active
 ```
@@ -325,18 +325,20 @@ fdt addr ${fdt_addr_r}
 booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
-_What happens when we run this?_
+_What happens when we run it at the U-Boot Command Prompt?_
+
+This happens...
 
 ```bash
-cv181x_c906# setenv tftp_server 192.168.31.10
-cv181x_c906# printenv tftp_server
+$ setenv tftp_server 192.168.31.10
+$ printenv tftp_server
 tftp_server=192.168.31.10
 
-cv181x_c906# setenv ramdisk_size 0x1000000
-cv181x_c906# printenv ramdisk_size
+$ setenv ramdisk_size 0x1000000
+$ printenv ramdisk_size
 ramdisk_size=0x1000000
 
-cv181x_c906# dhcp ${kernel_addr_r} ${tftp_server}:Image
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image
 Speed: 100, full duplex
 BOOTP broadcast 1
 BOOTP broadcast 2
@@ -352,7 +354,7 @@ Loading: #################################################################
 done
 Bytes transferred = 2097800 (200288 hex)
 
-cv181x_c906# tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Speed: 100, full duplex
 Using ethernet@4070000 device
 TFTP from server 192.168.31.10; our IP address is 192.168.31.47
@@ -363,9 +365,9 @@ Loading: ####
 done
 Bytes transferred = 50235 (c43b hex)
 
-cv181x_c906# fdt addr ${fdt_addr_r}
+$ fdt addr ${fdt_addr_r}
 
-cv181x_c906# tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+$ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 Speed: 100, full duplex
 Using ethernet@4070000 device
 TFTP from server 192.168.31.10; our IP address is 192.168.31.47
@@ -376,7 +378,7 @@ Loading: #################################################################
 done
 Bytes transferred = 8354816 (7f7c00 hex)
 
-cv181x_c906# booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ## Flattened Device Tree blob at 81200000
    Booting using the fdt blob at 0x81200000
    Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
@@ -385,11 +387,7 @@ cv181x_c906# booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr
 Starting kernel ...
 ```
 
-NuttX Kernel hangs, but that's OK! We haven't modified NuttX Kernel for SG2000 yet. Let's fix this...
-
-# Boot Apache NuttX RTOS over TFTP
-
-TODO
+NuttX Kernel hangs, but that's OK! We haven't modified NuttX Kernel for SG2000 yet. Let's print something...
 
 # UART Controller for SG2000
 
@@ -406,17 +404,28 @@ According to the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/
 
 We'll print to UART0 in NuttX.
 
-TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
+_What UART Controller is inside SG2000 / Milk-V Duo S?_
+
+According to the OpenSBI Log above: The UART Controller is `uart8250`.
+
+Which is supported by NuttX yay!
+
+Let's modify the NuttX Boot Code to write to the UART Output Register. We'll do this in RISC-V Assembly...
 
 # Print to SG2000 UART in RISC-V Assembly
 
-TODO
+Here's how we print to SG2000 UART in RISC-V Assembly...
 
 https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console
+
+From the previous section: SG2000 UART0 Controller is at 0x04140000. We'll write to that address, to print something to Serial Console.
+
+We insert this RISC-V Assembly at the top of the NuttX Boot Code...
 
 https://github.com/lupyuen2/wip-nuttx/blob/sg2000/arch/risc-v/src/bl808/bl808_head.S#L70-L89
 
 ```c
+/* RISC-V Boot Code for Apache NuttX RTOS */
 real_start:
 
   /* Print `123` to UART */
@@ -439,13 +448,146 @@ real_start:
   sb  t1, 0(t0)
 ```
 
-# Apache NuttX RTOS boots a tiny bit on Milk-V Duo S
+Which will print `123` when NuttX boots. Let's build and test this!
 
-TODO
+# Build Apache NuttX RTOS for Milk-V Duo S
+
+Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S...
 
 ```bash
-cv181x_c906# setenv tftp_server 192.168.31.10
-cv181x_c906# dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+## Download WIP NuttX for SG2000 (based on Ox64 BL808)
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx \
+  nuttx
+git clone --branch sg2000 \
+  https://github.com/lupyuen2/wip-nuttx-apps \
+  apps
+cd nuttx
+
+## TODO: Set PATH
+export PATH="$HOME/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin/bin:$PATH"
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+## Build NuttX
+function build_nuttx {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build NuttX
+  make -j 8
+
+  ## Return to previous folder
+  popd
+}
+
+## Build Apps Filesystem
+function build_apps {
+
+  ## Go to NuttX Folder
+  pushd ../nuttx
+
+  ## Build Apps Filesystem
+  make -j 8 export
+  pushd ../apps
+  ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+  make -j 8 import
+  popd
+
+  ## Return to previous folder
+  popd
+}
+
+## Pull updates
+git pull && git status && hash1=`git rev-parse HEAD`
+pushd ../apps
+git pull && git status && hash2=`git rev-parse HEAD`
+popd
+echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
+echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
+
+## Show the versions of GCC and Zig
+riscv64-unknown-elf-gcc -v
+
+## Configure build
+tools/configure.sh ox64:nsh
+
+## Build NuttX
+build_nuttx
+
+## Build Apps Filesystem
+build_apps
+
+## Generate Initial RAM Disk
+genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+## Show the size
+riscv64-unknown-elf-size nuttx
+
+## Export the Binary Image to `nuttx.bin`
+riscv64-unknown-elf-objcopy \
+  -O binary \
+  nuttx \
+  nuttx.bin
+
+## Prepare a Padding with 64 KB of zeroes
+head -c 65536 /dev/zero >/tmp/nuttx.pad
+
+## Append Padding and Initial RAM Disk to NuttX Kernel
+cat nuttx.bin /tmp/nuttx.pad initrd \
+  >Image
+
+## Copy the config
+cp .config nuttx.config
+
+## Dump the disassembly to nuttx.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+## Dump the init disassembly to init.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/init \
+  >init.S \
+  2>&1
+
+## Dump the hello disassembly to hello.S
+riscv64-unknown-elf-objdump \
+  --syms --source --reloc --demangle --line-numbers --wide \
+  --debugging \
+  ../apps/bin/hello \
+  >hello.S \
+  2>&1
+
+## Copy NuttX Image to TFTP Server
+scp Image tftpserver:/tftpboot/Image-sg2000
+ssh tftpserver ls -l /tftpboot/Image-sg2000
+```
+
+We have copied the NuttX Image to our TFTP Server. Let's boot this on Milk-V Duo S...
+
+# Apache NuttX RTOS boots a tiny bit on Milk-V Duo S
+
+Earlier we have...
+
+- Inserted the RISC-V Boot Code to print `123`
+
+- Compiled Apache NuttX RTOS for Milk-V Duo S
+
+- Copied the NuttX Image to our TFTP Server
+
+Let's boot NuttX over TFTP, with a little help from U-Boot Bootloader!
+
+```bash
+$ setenv tftp_server 192.168.31.10
+$ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 Speed: 100, full duplex
 BOOTP broadcast 1
 BOOTP broadcast 2
@@ -460,7 +602,7 @@ Loading: #################################################################
 . 1.2 MiB/s
 done
 Bytes transferred = 14195281 (d89a51 hex)
-cv181x_c906# tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Speed: 100, full duplex
 Using ethernet@4070000 device
 TFTP from server 192.168.31.10; our IP address is 192.168.31.243
@@ -470,8 +612,13 @@ Loading: ####
 . 1.2 MiB/s
 done
 Bytes transferred = 50235 (c43b hex)
-cv181x_c906# fdt addr ${fdt_addr_r}
-cv181x_c906# booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+$ fdt addr ${fdt_addr_r}
+```
+
+NuttX boots a tiny bit, and prints `123` yay!
+
+```bash
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ## Flattened Device Tree blob at 81200000
    Booting using the fdt blob at 0x81200000
    Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
@@ -482,12 +629,16 @@ Starting kernel ...
 123
 ```
 
+TODO: Fix the Boot Address of NuttX
+
+TODO: Configure the 16550 UART Driver for NuttX
+
 # U-Boot Commands for Milk-V Duo S
 
 Here are the U-Boot Commands...
 
 ```bash
-cv181x_c906# help
+$ help
 
 ?         - alias for 'help'
 base      - print or set address offset
