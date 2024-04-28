@@ -577,7 +577,7 @@ We have copied the NuttX Image to our TFTP Server. Let's boot this on Milk-V Duo
 
 Earlier we have...
 
-- Inserted the RISC-V Boot Code to print `123`
+- Inserted the RISC-V Boot Code to print `123` (at NuttX Startup)
 
 - Compiled Apache NuttX RTOS for Milk-V Duo S
 
