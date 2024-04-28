@@ -587,6 +587,7 @@ Let's boot NuttX over TFTP, with a little help from U-Boot Bootloader!
 
 ```bash
 $ setenv tftp_server 192.168.31.10
+
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 Speed: 100, full duplex
 BOOTP broadcast 1
@@ -602,6 +603,7 @@ Loading: #################################################################
 . 1.2 MiB/s
 done
 Bytes transferred = 14195281 (d89a51 hex)
+
 $ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Speed: 100, full duplex
 Using ethernet@4070000 device
@@ -612,6 +614,7 @@ Loading: ####
 . 1.2 MiB/s
 done
 Bytes transferred = 50235 (c43b hex)
+
 $ fdt addr ${fdt_addr_r}
 ```
 
@@ -625,13 +628,14 @@ $ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
    Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
 
 Starting kernel ...
-
 123
 ```
 
-TODO: Fix the Boot Address of NuttX
+Our NuttX Boot Code is actually running on SG2000 / Milk-V Duo S!
 
-TODO: Configure the 16550 UART Driver for NuttX
+TODO: Fix the Boot Address of NuttX, so the rest of NuttX can start
+
+TODO: Configure the 16550 UART Driver for NuttX, so can see the Console Output
 
 # U-Boot Commands for Milk-V Duo S
 
