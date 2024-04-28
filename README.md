@@ -301,7 +301,7 @@ printenv ramdisk_size
 ## kernel_addr_r=0x80200000
 ## tftp_server=192.168.x.x
 ## TODO: Fix the NuttX Image
-dhcp ${kernel_addr_r} ${tftp_server}:Image
+dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
 ## Load the Device Tree from TFTP Server
 ## fdt_addr_r=0x81200000
@@ -417,6 +417,12 @@ According to the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/
 We'll print to UART0 in NuttX.
 
 TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
+
+# NuttX prints to SG2000 Serial Console
+
+TODO
+
+https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console
 
 # U-Boot Commands for Milk-V Duo S
 
