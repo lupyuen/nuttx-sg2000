@@ -312,10 +312,10 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 ## fdt_addr_r=0x81200000
 fdt addr ${fdt_addr_r}
 
+## TODO: If Initial RAM Disk is needed...
 ## Load the Intial RAM Disk from TFTP Server
 ## ramdisk_addr_r=0x81600000
-## TODO: Fix the Initial RAM Disk
-tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 
 ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
 ## kernel_addr_r=0x80200000
@@ -418,11 +418,79 @@ We'll print to UART0 in NuttX.
 
 TODO: What UART Controller is inside Milk-V Duo S? Modify the NuttX Boot Code to write UART Output Register in RISC-V Assembly
 
-# NuttX prints to SG2000 Serial Console
+# Print to SG2000 UART in RISC-V Assembly
 
 TODO
 
 https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console
+
+https://github.com/lupyuen2/wip-nuttx/blob/sg2000/arch/risc-v/src/bl808/bl808_head.S#L70-L89
+
+```c
+real_start:
+
+  /* Print `123` to UART */
+  /* Load UART Base Address to Register t0 */
+  li  t0, 0x04140000
+
+  /* Load `1` to Register t1 */
+  li  t1, 0x31
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `2` to Register t1 */
+  li  t1, 0x32
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+
+  /* Load `3` to Register t1 */
+  li  t1, 0x33
+  /* Store byte from Register t1 to UART Base Address, Offset 0 */
+  sb  t1, 0(t0)
+```
+
+# Apache NuttX RTOS boots a tiny bit on Milk-V Duo S
+
+TODO
+
+```bash
+cv181x_c906# setenv tftp_server 192.168.31.10
+cv181x_c906# dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+Speed: 100, full duplex
+BOOTP broadcast 1
+BOOTP broadcast 2
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.31.243 (424 ms)
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.243
+Filename 'Image-sg2000'.
+Load address: 0x80200000
+Loading: #################################################################
+. 1.2 MiB/s
+done
+Bytes transferred = 14195281 (d89a51 hex)
+cv181x_c906# tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+Speed: 100, full duplex
+Using ethernet@4070000 device
+TFTP from server 192.168.31.10; our IP address is 192.168.31.243
+Filename 'jh7110-star64-pine64.dtb'.
+Load address: 0x81200000
+Loading: ####
+. 1.2 MiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+cv181x_c906# fdt addr ${fdt_addr_r}
+cv181x_c906# booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+
+123
+```
 
 # U-Boot Commands for Milk-V Duo S
 
