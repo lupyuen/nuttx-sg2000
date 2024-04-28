@@ -414,7 +414,7 @@ Let's modify the NuttX Boot Code to write to the UART Output Register. We'll do 
 
 # Print to SG2000 UART in RISC-V Assembly
 
-Here's how we print to SG2000 UART in RISC-V Assembly...
+Here's how we print to 8250 UART in RISC-V Assembly...
 
 https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console
 
