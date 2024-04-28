@@ -583,9 +583,10 @@ Earlier we have...
 
 - Copied the NuttX Image to our TFTP Server
 
-Let's boot NuttX over TFTP, with a little help from U-Boot Bootloader!
+Let's boot NuttX over TFTP, with a little help from U-Boot Bootloader! Run these commands at the U-Boot Command Prompt...
 
 ```bash
+## TODO: Change to your TFTP Server IP Address
 $ setenv tftp_server 192.168.31.10
 
 $ dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
