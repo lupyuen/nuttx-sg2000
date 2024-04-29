@@ -649,6 +649,8 @@ TODO: Can we auto-boot NuttX over TFTP, without manually typing U-Boot Commands 
 
 TODO: Can we run `expect` with `screen` to automate the testing of NuttX on SG2000?
 
+TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD Multiplexer (USB / FTDI)](https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/)
+
 # U-Boot Commands for Milk-V Duo S
 
 Here are the U-Boot Commands available for Milk-V Duo S (which doesn't support writing to Flash Memory)...
