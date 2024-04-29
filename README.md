@@ -645,9 +645,13 @@ TODO: Fix the Boot Address of NuttX, so the rest of NuttX can start
 
 TODO: Configure the 16550 UART Driver for NuttX, so can see the Console Output
 
+TODO: Can we auto-boot NuttX over TFTP, without manually typing U-Boot Commands every time? Maybe we change the U-Boot Config on MicroSD?
+
+TODO: Can we run `expect` with `screen` to automate the testing of NuttX on SG2000?
+
 # U-Boot Commands for Milk-V Duo S
 
-Here are the U-Boot Commands...
+Here are the U-Boot Commands available for Milk-V Duo S (which doesn't support writing to Flash Memory)...
 
 ```bash
 $ help
