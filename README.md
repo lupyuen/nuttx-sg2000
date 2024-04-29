@@ -22,7 +22,7 @@ https://milkv.io/docs/duo/getting-started/duos
 
 ![Milk-V Duo S](https://lupyuen.github.io/images/sg2000-board.jpg)
 
-USB UART Dongle must be CP2102, it doesn't like [CH340G](https://pine64.com/product/serial-console-woodpecker-edition/) 😬
+USB UART Dongle must be [CP2102](http://sun-light.com.sg/index.php?route=product/product&product_id=2367), it doesn't like [CH340G](https://pine64.com/product/serial-console-woodpecker-edition/) 😬
 
 Flip the switch so it's set to "RV" (RISC-V) instead of "Arm"...
 
@@ -52,7 +52,7 @@ B.SCS/0/0.WD.URPL.USBI.USBEF.BS/EMMC.EMI/25000000/12000000.
 
 Nope we're in Arm Mode! Flip the switch back to RISC-V!
 
-[If we use CH340G](https://pine64.com/product/serial-console-woodpecker-edition/): UART Output will be garbled (happens on Linux and macOS, maybe Windows too)...
+[If we use CH340G](https://pine64.com/product/serial-console-woodpecker-edition/) (instead of [CP2102](http://sun-light.com.sg/index.php?route=product/product&product_id=2367)): UART Output will be garbled (happens on Linux and macOS, maybe Windows too)...
 
 https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
