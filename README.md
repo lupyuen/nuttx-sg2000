@@ -693,17 +693,33 @@ https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517
 
 Starting kernel ...
 
-123ABC_assert: Current Version: NuttX  12.4.0 f37a380-dirty May  6 2024 23:31:01 risc-v
-_assert: Assertion failed ret > 0: at file: init/nx_bringup.c:379 task: AppBringUp process: Kernel 0x80200f3a
-up_dump_register: EPC: 000000008020fd1a
-up_dump_register: A0: 0000000080401b70 A1: 000000000000017b A2: 0000000080219498 A3: 0000000000000000
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80409130
+nxtask_activate: AppBringUp pid=2,TCB=0x80409740
+nx_start_application: Starting init task: /system/bin/init
+up_addrenv_create: ERROR: Failed to copy kernel mappings to new environment
+elf_addrenv_alloc: ERROR: up_addrenv_create failed: -22
+elf_load: ERROR: elf_addrenv_alloc() failed: -22
+elf_loadbinary: Failed to load ELF program binary: -22
+exec_internal: ERROR: Failed to load program '/system/bin/init': -22
+_assert: Current Version: NuttX  12.4.0 f37a380-dirty May  7 2024 00:11:46 risc-v
+_assert: Assertion failed ret > 0: at file: init/nx_bringup.c:379 task: AppBringUp process: Kernel 0x80200f66
+up_dump_register: EPC: 00000000802108a2
+up_dump_register: A0: 0000000080401b70 A1: 000000000000017b A2: 000000008021a898 A3: 0000000000000000
 up_dump_register: A4: 0000000000007fff A5: 0000000000000002 A6: 0000000080407d28 A7: fffffffffffffff8
-up_dump_register: T0: 000000000000002e T1: 0000000000000007 T2: 00000000000001ff T3: 000000008040b6e8
-up_dump_register: T4: 000000008040b6e0 T5: 0000000000000009 T6: 000000000000002a
+up_dump_register: T0: 000000000000002e T1: 000000000000006a T2: 00000000000001ff T3: 000000000000006c
+up_dump_register: T4: 0000000000000068 T5: 0000000000000009 T6: 000000000000002a
 up_dump_register: S0: 0000000000000000 S1: 0000000080409740 S2: 0000000000000000 S3: 0000000000000000
-up_dump_register: S4: 0000000080219498 S5: 0000000080219468 S6: 0000000080401e10 S7: 8000000201842022
+up_dump_register: S4: 000000008021a898 S5: 000000008021a848 S6: 0000000080401e10 S7: 8000000201842022
 up_dump_register: S8: 000000000000017b S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 000000008040c660 FP: 0000000000000000 TP: 0000000000000000 RA: 000000008020fd1a
+up_dump_register: SP: 000000008040c660 FP: 0000000000000000 TP: 0000000000000000 RA: 00000000802108a2
+dump_stack: User Stack:
+dump_stack:   base: 0x8040c030
+dump_stack:   size: 00002000
+dump_stack:     sp: 0x8040c660
 ```
 
 # U-Boot Commands for Milk-V Duo S
