@@ -662,6 +662,16 @@ No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/rel
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
 
+UART Interrupt:
+
+> 3.1 Interrupt Subsystem
+
+> Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz
+
+> Int #44: UART0
+
+CONFIG_16550_UART0_CLOCK?
+
 # U-Boot Commands for Milk-V Duo S
 
 Here are the U-Boot Commands available for Milk-V Duo S (which doesn't support writing to Flash Memory)...
