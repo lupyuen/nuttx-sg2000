@@ -679,7 +679,32 @@ UART Interrupt:
 
 > Int #44: UART0
 
-CONFIG_16550_UART0_CLOCK?
+TODO: CONFIG_16550_UART0_CLOCK?
+
+NuttX boots some more yay!
+
+https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517
+
+```bash
+## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Ramdisk to 9fe00000, end 9fe00000 ... OK
+   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+
+123ABC_assert: Current Version: NuttX  12.4.0 f37a380-dirty May  6 2024 23:31:01 risc-v
+_assert: Assertion failed ret > 0: at file: init/nx_bringup.c:379 task: AppBringUp process: Kernel 0x80200f3a
+up_dump_register: EPC: 000000008020fd1a
+up_dump_register: A0: 0000000080401b70 A1: 000000000000017b A2: 0000000080219498 A3: 0000000000000000
+up_dump_register: A4: 0000000000007fff A5: 0000000000000002 A6: 0000000080407d28 A7: fffffffffffffff8
+up_dump_register: T0: 000000000000002e T1: 0000000000000007 T2: 00000000000001ff T3: 000000008040b6e8
+up_dump_register: T4: 000000008040b6e0 T5: 0000000000000009 T6: 000000000000002a
+up_dump_register: S0: 0000000000000000 S1: 0000000080409740 S2: 0000000000000000 S3: 0000000000000000
+up_dump_register: S4: 0000000080219498 S5: 0000000080219468 S6: 0000000080401e10 S7: 8000000201842022
+up_dump_register: S8: 000000000000017b S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 000000008040c660 FP: 0000000000000000 TP: 0000000000000000 RA: 000000008020fd1a
+```
 
 # U-Boot Commands for Milk-V Duo S
 
