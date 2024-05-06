@@ -622,6 +622,15 @@ Bytes transferred = 50235 (c43b hex)
 
 ## TODO: NuttX doesn't need the Device Tree. Remove this.
 $ fdt addr ${fdt_addr_r}
+
+## Boot NuttX from RAM
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+```
+
+Or in a single line...
+
+```bash
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
 NuttX boots a tiny bit, and prints `123` yay!
