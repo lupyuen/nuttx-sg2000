@@ -839,6 +839,12 @@ at file: machine/risc-v/arch_elf.c:494
 task: AppBringUp process: Kernel 0x80200f34
 ```
 
+# TODO
+
+TODO: Boot OK yay!
+
+https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8
+
 # Dump the SG2000 Linux Device Tree
 
 TODO
