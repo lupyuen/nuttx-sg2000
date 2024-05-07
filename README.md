@@ -660,9 +660,9 @@ TODO: Can we run `expect` with `screen` to automate the testing of NuttX on SG20
 
 TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD Multiplexer (USB / FTDI)](https://www.tindie.com/products/badgerdnl/sdwire-usb-c-sd-card-reader-sd-mux/)
 
-# TODO
+# Set the NuttX Memory Map for SG2000
 
-TODO: Set the NuttX Memory Map for SG2000
+TODO
 
 https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2
 
@@ -670,7 +670,9 @@ https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d
 kernel_addr_r=0x80200000
 ```
 
-TODO: Disable the PLIC Interrupt Controller
+# Disable the PLIC Interrupt Controller
+
+TODO
 
 https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
 
@@ -679,7 +681,9 @@ No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/rel
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
 
-TODO: Select the NuttX Driver for 16550 UART
+# Select the NuttX Driver for 16550 UART
+
+TODO
 
 https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec
 
@@ -693,7 +697,9 @@ TODO: Set the UART Interrupt
 
 TODO: CONFIG_16550_UART0_CLOCK?
 
-TODO: Enable Logging for Scheduler and Binary Loader
+# Enable Logging for Scheduler and Binary Loader
+
+TODO
 
 https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47
 
