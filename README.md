@@ -115,19 +115,19 @@ timeout 50
 
 
 label l0
-	menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
-	linux /vmlinuz-5.10.4-20240329-1+
+  menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+
+  linux /vmlinuz-5.10.4-20240329-1+
 
-	fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
+  fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
 
-	append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
+  append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw
 
 label l0r
-	menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+ (rescue target)
-	linux /vmlinuz-5.10.4-20240329-1+
+  menu label Debian GNU/Linux trixie/sid 5.10.4-20240329-1+ (rescue target)
+  linux /vmlinuz-5.10.4-20240329-1+
 
-	fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
-	append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
+  fdtdir /fdt/linux-image-duos-5.10.4-20240329-1+/
+  append root=/dev/root console=ttyS0,115200 earlycon=sbi root=/dev/mmcblk0p2 rootwait rw single
 ```
 
 Yep Linux boots OK on Milk-V Duo S! (Together with OpenSBI and U-Boot Bootloader)
@@ -925,66 +925,66 @@ We dumped the SG2000 Linux Device Tree. Let's extract the Interrupt Controller t
 
 Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd.dts)
 
-```json
-	cpus {
-		#address-cells = <0x01>;
-		#size-cells = <0x00>;
-		timebase-frequency = <0x17d7840>;
+```c
+  cpus {
+    #address-cells = <0x01>;
+    #size-cells = <0x00>;
+    timebase-frequency = <0x17d7840>;
 
-		cpu-map {
+    cpu-map {
 
-			cluster0 {
+      cluster0 {
 
-				core0 {
-					cpu = <0x01>;
-				};
-			};
-		};
+        core0 {
+          cpu = <0x01>;
+        };
+      };
+    };
 
-		cpu@0 {
-			device_type = "cpu";
-			reg = <0x00>;
-			status = "okay";
-			compatible = "riscv";
-			riscv,isa = "rv64imafdvcsu";
-			mmu-type = "riscv,sv39";
-			clock-frequency = <0x17d7840>;
+    cpu@0 {
+      device_type = "cpu";
+      reg = <0x00>;
+      status = "okay";
+      compatible = "riscv";
+      riscv,isa = "rv64imafdvcsu";
+      mmu-type = "riscv,sv39";
+      clock-frequency = <0x17d7840>;
 
-			interrupt-controller {
-				#interrupt-cells = <0x01>;
-				interrupt-controller;
-				compatible = "riscv,cpu-intc";
-				phandle = <0x16>;
-			};
-		};
-	};
+      interrupt-controller {
+        #interrupt-cells = <0x01>;
+        interrupt-controller;
+        compatible = "riscv,cpu-intc";
+        phandle = <0x16>;
+      };
+    };
+  };
 
-	soc {
-		#address-cells = <0x02>;
-		#size-cells = <0x02>;
-		compatible = "simple-bus";
-		ranges;
+  soc {
+    #address-cells = <0x02>;
+    #size-cells = <0x02>;
+    compatible = "simple-bus";
+    ranges;
 
-		interrupt-controller@70000000 {
-			riscv,ndev = <0x65>;
-			riscv,max-priority = <0x07>;
-			reg-names = "control";
-			reg = <0x00 0x70000000 0x00 0x4000000>;
-			interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
-			interrupt-controller;
-			compatible = "riscv,plic0";
-			#interrupt-cells = <0x02>;
-			#address-cells = <0x00>;
-			phandle = <0x04>;
-		};
+    interrupt-controller@70000000 {
+      riscv,ndev = <0x65>;
+      riscv,max-priority = <0x07>;
+      reg-names = "control";
+      reg = <0x00 0x70000000 0x00 0x4000000>;
+      interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
+      interrupt-controller;
+      compatible = "riscv,plic0";
+      #interrupt-cells = <0x02>;
+      #address-cells = <0x00>;
+      phandle = <0x04>;
+    };
 
-		clint@74000000 {
-			interrupts-extended = <0x16 0x03 0x16 0x07>;
-			reg = <0x00 0x74000000 0x00 0x10000>;
-			compatible = "riscv,clint0";
-			clint,has-no-64bit-mmio;
-		};
-	};
+    clint@74000000 {
+      interrupts-extended = <0x16 0x03 0x16 0x07>;
+      reg = <0x00 0x74000000 0x00 0x10000>;
+      compatible = "riscv,clint0";
+      clint,has-no-64bit-mmio;
+    };
+  };
 ```
 
 TODO: Fix the PLIC Interrupt Controller in NuttX
