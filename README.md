@@ -650,9 +650,11 @@ Starting kernel ...
 
 Our NuttX Boot Code is actually running on SG2000 / Milk-V Duo S!
 
-TODO: Fix the Boot Address of NuttX, so the rest of NuttX can start
+Coming up...
 
-TODO: Configure the 16550 UART Driver for NuttX, so can see the Console Output
+1.  Fix the Boot Address of NuttX, so the rest of NuttX can start
+
+1.  Configure the 16550 UART Driver for NuttX, so can see the Console Output
 
 TODO: Can we auto-boot NuttX over TFTP, without manually typing U-Boot Commands every time? Maybe we change the U-Boot Config on MicroSD?
 
@@ -724,9 +726,7 @@ So let's disable PLIC in NuttX...
 
 https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
 
-TODO: How to handle interrupts with 8051?
-
-TODO: Dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller
+Later we'll dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller.
 
 # Select the NuttX Driver for 16550 UART
 
@@ -843,6 +843,101 @@ _assert: Assertion failed 0x17 == (insn & 0x7F):
 at file: machine/risc-v/arch_elf.c:494
 task: AppBringUp process: Kernel 0x80200f34
 ```
+
+# Dump the SG2000 Linux Device Tree
+
+TODO
+
+Let's dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller.
+
+From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
+
+We pick the Latest Release for Milk-V Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
+
+We copy out the SG2000 Device Tree Binary: [cv181x_milkv_duos_sd.dtb](cv181x_milkv_duos_sd.dtb)
+
+And convert it to Device Tree Source: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd.dts)
+
+```bash
+## Convert the SG2000 Device Tree
+dtc \
+  -o cv181x_milkv_duos_sd.dts \
+  -O dts \
+  -I dtb \
+  cv181x_milkv_duos_sd.dtb
+```
+
+# 8051 Interrupt Controller for SG2000
+
+TODO
+
+We dumped the SG2000 Linux Device Tree. Let's extract the 8051 Interrupt Controller to understand it.
+
+Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd.dts)
+
+```json
+	cpus {
+		#address-cells = <0x01>;
+		#size-cells = <0x00>;
+		timebase-frequency = <0x17d7840>;
+
+		cpu-map {
+
+			cluster0 {
+
+				core0 {
+					cpu = <0x01>;
+				};
+			};
+		};
+
+		cpu@0 {
+			device_type = "cpu";
+			reg = <0x00>;
+			status = "okay";
+			compatible = "riscv";
+			riscv,isa = "rv64imafdvcsu";
+			mmu-type = "riscv,sv39";
+			clock-frequency = <0x17d7840>;
+
+			interrupt-controller {
+				#interrupt-cells = <0x01>;
+				interrupt-controller;
+				compatible = "riscv,cpu-intc";
+				phandle = <0x16>;
+			};
+		};
+	};
+
+	soc {
+		#address-cells = <0x02>;
+		#size-cells = <0x02>;
+		compatible = "simple-bus";
+		ranges;
+
+		interrupt-controller@70000000 {
+			riscv,ndev = <0x65>;
+			riscv,max-priority = <0x07>;
+			reg-names = "control";
+			reg = <0x00 0x70000000 0x00 0x4000000>;
+			interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
+			interrupt-controller;
+			compatible = "riscv,plic0";
+			#interrupt-cells = <0x02>;
+			#address-cells = <0x00>;
+			phandle = <0x04>;
+		};
+
+		clint@74000000 {
+			interrupts-extended = <0x16 0x03 0x16 0x07>;
+			reg = <0x00 0x74000000 0x00 0x10000>;
+			compatible = "riscv,clint0";
+			clint,has-no-64bit-mmio;
+		};
+	};
+```
+
+TODO: How to handle interrupts with 8051?
 
 # U-Boot Commands for Milk-V Duo S
 
