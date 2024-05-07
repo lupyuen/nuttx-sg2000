@@ -664,11 +664,15 @@ TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD
 
 TODO: Set the NuttX Memory Map for SG2000
 
+https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2
+
 ```bash
 kernel_addr_r=0x80200000
 ```
 
-TODO: Set the NuttX Interrupt Controller for SG2000
+TODO: Disable the PLIC Interrupt Controller
+
+https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
 
 No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
 
@@ -676,6 +680,8 @@ No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/rel
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
 
 TODO: Select the NuttX Driver for 16550 UART
+
+https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec
 
 TODO: Set the UART Interrupt
 
@@ -686,6 +692,10 @@ TODO: Set the UART Interrupt
 > Int #44: UART0
 
 TODO: CONFIG_16550_UART0_CLOCK?
+
+TODO: Enable Logging for Scheduler and Binary Loader
+
+https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47
 
 # NuttX Crash Dump on SG2000
 
