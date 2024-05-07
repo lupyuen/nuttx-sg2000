@@ -715,14 +715,18 @@ SECTIONS {
 
 # Disable the PLIC Interrupt Controller
 
-TODO
-
-https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
-
-No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
+Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). But SG2000 uses an 8051 Interrupt Controller? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
 
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
+
+So let's disable PLIC in NuttX...
+
+https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
+
+TODO: How to handle interrupts with 8051?
+
+TODO: Dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller
 
 # Select the NuttX Driver for 16550 UART
 
