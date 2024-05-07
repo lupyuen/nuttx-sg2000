@@ -675,6 +675,8 @@ No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/rel
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
 
+TODO: Select the NuttX Driver for 16550 UART
+
 TODO: Set the UART Interrupt
 
 > 3.1 Interrupt Subsystem
@@ -684,8 +686,6 @@ TODO: Set the UART Interrupt
 > Int #44: UART0
 
 TODO: CONFIG_16550_UART0_CLOCK?
-
-TODO: Select the NuttX Driver for 16550 UART
 
 # NuttX Crash Dump on SG2000
 
