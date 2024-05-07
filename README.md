@@ -843,6 +843,11 @@ task: AppBringUp process: Kernel 0x80200f34
 
 TODO: Boot OK yay!
 
+```bash
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
 https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8
 
 # Dump the SG2000 Linux Device Tree
