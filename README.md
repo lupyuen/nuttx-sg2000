@@ -662,12 +662,55 @@ TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD
 
 # Set the NuttX Memory Map for SG2000
 
-TODO
-
-https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2
+From above, we see that SG2000 boots at this address...
 
 ```bash
 kernel_addr_r=0x80200000
+```
+
+Thus we define the NuttX Memory Map for SG2000 like so...
+
+https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2
+
+NuttX Kernel will boot at 0x8020_0000, NuttX Apps will run at Virtual Address 0xC000_0000.
+
+Here's the NuttX Config: [boards/risc-v/bl808/ox64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+```bash
+## Kernel RAM
+CONFIG_RAM_START=0x80200000
+CONFIG_RAM_SIZE=1048576
+
+## Kernel Paged Pool (Allocated to NuttX Apps)
+CONFIG_ARCH_PGPOOL_PBASE=0x80600000
+CONFIG_ARCH_PGPOOL_VBASE=0x80600000
+CONFIG_ARCH_PGPOOL_SIZE=4194304
+
+## Virtual Memory for NuttX App Code
+CONFIG_ARCH_TEXT_VBASE=0xC0000000
+CONFIG_ARCH_TEXT_NPAGES=128
+
+## Virtual Memory for NuttX App Data
+CONFIG_ARCH_DATA_VBASE=0xC0100000
+CONFIG_ARCH_DATA_NPAGES=128
+
+## Virtual Memory for NuttX App Heap
+CONFIG_ARCH_HEAP_VBASE=0xC0200000
+CONFIG_ARCH_HEAP_NPAGES=128
+```
+
+And here's the NuttX Linker Script: [boards/risc-v/bl808/ox64/scripts/ld.script](https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37)
+
+```c
+MEMORY {
+    kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
+    ksram (rwx) : ORIGIN = 0x80400000, LENGTH = 2048K   /* w/ cache */
+    pgram (rwx) : ORIGIN = 0x80600000, LENGTH = 4096K   /* w/ cache */
+    ramdisk (rwx) : ORIGIN = 0x80A00000, LENGTH = 16M   /* w/ cache */
+}
+...
+SECTIONS {
+  . = 0x80200000;
 ```
 
 # Disable the PLIC Interrupt Controller
