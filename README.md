@@ -662,16 +662,20 @@ TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD
 
 # TODO
 
+TODO: Set the NuttX Memory Map for SG2000
+
 ```bash
 kernel_addr_r=0x80200000
 ```
+
+TODO: Set the NuttX Interrupt Controller for SG2000
 
 No PLIC? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
 
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
 
-UART Interrupt:
+TODO: Set the UART Interrupt
 
 > 3.1 Interrupt Subsystem
 
@@ -681,7 +685,11 @@ UART Interrupt:
 
 TODO: CONFIG_16550_UART0_CLOCK?
 
-NuttX boots some more yay!
+TODO: Select the NuttX Driver for 16550 UART
+
+# NuttX Crash Dump on SG2000
+
+Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!
 
 https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517
 
@@ -720,6 +728,16 @@ dump_stack: User Stack:
 dump_stack:   base: 0x8040c030
 dump_stack:   size: 00002000
 dump_stack:     sp: 0x8040c660
+```
+
+TODO: Why did NuttX fail while starting NuttX Shell? Is it a Virtual Memory problem?
+
+```bash
+up_addrenv_create: ERROR: Failed to copy kernel mappings to new environment
+elf_addrenv_alloc: ERROR: up_addrenv_create failed: -22
+elf_load: ERROR: elf_addrenv_alloc() failed: -22
+elf_loadbinary: Failed to load ELF program binary: -22
+exec_internal: ERROR: Failed to load program '/system/bin/init': -22
 ```
 
 # U-Boot Commands for Milk-V Duo S
