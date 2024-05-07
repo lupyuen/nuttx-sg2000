@@ -662,7 +662,7 @@ TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD
 
 # Set the NuttX Memory Map for SG2000
 
-From above, we see that SG2000 boots at this address...
+From the U-Boot Bootloader Config above: We see that SG2000 boots at this address...
 
 ```bash
 kernel_addr_r=0x80200000
@@ -715,7 +715,7 @@ SECTIONS {
 
 # Disable the PLIC Interrupt Controller
 
-Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). But SG2000 uses an 8051 Interrupt Controller? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)
+Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). But SG2000 uses an 8051 Interrupt Controller? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
 
 > __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
 output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
@@ -730,11 +730,42 @@ TODO: Dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Control
 
 # Select the NuttX Driver for 16550 UART
 
-TODO
+From the OpenSBI Log above: We see that SG2000 operates with a 8250 UART Controller.
+
+Thus we select the NuttX Driver for 16550 UART, which is compatible with 8250...
 
 https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec
 
-TODO: Set the UART Interrupt
+Here's the NuttX Config: [boards/risc-v/bl808/ox64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+```bash
+CONFIG_16550_ADDRWIDTH=0
+CONFIG_16550_REGINCR=4
+CONFIG_16550_UART0=y
+CONFIG_16550_UART0_BASE=0x04140000
+CONFIG_16550_UART0_CLOCK=23040000
+CONFIG_16550_UART0_IRQ=44
+CONFIG_16550_UART0_SERIAL_CONSOLE=y
+CONFIG_16550_UART=y
+CONFIG_16550_WAIT_LCR=y
+CONFIG_SERIAL_UART_ARCH_MMIO=y
+```
+
+Try not to update the NuttX Config File directly! We ran `make menuconfig` to generate the above file...
+
+```bash
+## Update NuttX Config
+make menuconfig \
+  && make savedefconfig \
+  && grep -v CONFIG_HOST defconfig \
+  >boards/risc-v/bl808/ox64/configs/nsh/defconfig
+```
+
+To find the menuconfig settings: Press "`/`" and enter  the name of the setting, like "16550_ADDRWIDTH". This ensures that the Kconfig Dependencies are correctly updated.
+
+_How did we get IRQ 44 for UART?_
+
+We saw this in the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
 
 > 3.1 Interrupt Subsystem
 
@@ -742,17 +773,31 @@ TODO: Set the UART Interrupt
 
 > Int #44: UART0
 
-TODO: CONFIG_16550_UART0_CLOCK?
+TODO: Fix the UART Clock: 16550_UART0_CLOCK
 
-# Enable Logging for Scheduler and Binary Loader
+# Enable Logging for NuttX Scheduler and Binary Loader
 
-TODO
+For easier troubleshooting: We enable the Logging for NuttX Scheduler and Binary Loader...
 
 https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47
 
+Here's the NuttX Config: [boards/risc-v/bl808/ox64/configs/nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+```bash
+CONFIG_DEBUG_BINFMT=y
+CONFIG_DEBUG_BINFMT_ERROR=y
+CONFIG_DEBUG_BINFMT_WARN=y
+CONFIG_DEBUG_SCHED=y
+CONFIG_DEBUG_SCHED_ERROR=y
+CONFIG_DEBUG_SCHED_INFO=y
+CONFIG_DEBUG_SCHED_WARN=y
+```
+
+Remember: Always use `make menuconfig` to update the settings!
+
 # NuttX Crash Dump on SG2000
 
-Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!
+We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!
 
 https://gist.github.com/lupyuen/594f0df20d39001bac171412d594d517
 
