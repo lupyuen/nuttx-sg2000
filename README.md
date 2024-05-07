@@ -730,7 +730,7 @@ dump_stack:   size: 00002000
 dump_stack:     sp: 0x8040c660
 ```
 
-TODO: Why did NuttX fail while starting NuttX Shell? Is it a Virtual Memory problem?
+_Why did NuttX fail while starting NuttX Shell? Is it a Virtual Memory problem?_
 
 ```bash
 up_addrenv_create: ERROR: Failed to copy kernel mappings to new environment
@@ -739,6 +739,10 @@ elf_load: ERROR: elf_addrenv_alloc() failed: -22
 elf_loadbinary: Failed to load ELF program binary: -22
 exec_internal: ERROR: Failed to load program '/system/bin/init': -22
 ```
+
+OK our Virtual Addresses in NuttX Config are incorrect. Let's fix them...
+
+TODO
 
 # U-Boot Commands for Milk-V Duo S
 
