@@ -322,7 +322,10 @@ fdt addr ${fdt_addr_r}
 ## ramdisk_addr_r=0x81600000
 ## ramdisk_size=0x1000000
 ## fdt_addr_r=0x81200000
-booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+booti ${kernel_addr_r} - ${fdt_addr_r}
+
+## For Linux: We need the RAM Disk Address
+## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
 _What happens when we run it at the U-Boot Command Prompt?_
@@ -378,7 +381,7 @@ Loading: #################################################################
 done
 Bytes transferred = 8354816 (7f7c00 hex)
 
-$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
 ## Flattened Device Tree blob at 81200000
    Booting using the fdt blob at 0x81200000
    Loading Ramdisk to 9e27f000, end 9f27f000 ... OK
@@ -623,21 +626,24 @@ Bytes transferred = 50235 (c43b hex)
 ## TODO: NuttX doesn't need the Device Tree. Remove this.
 $ fdt addr ${fdt_addr_r}
 
-## Boot NuttX from RAM
-$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+## Boot NuttX from RAM. RAM Disk Address must be `-`!
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
+
+## For Linux: We need the RAM Disk Address
+## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 ```
 
 Or in a single line...
 
 ```bash
-setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; $ booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
 NuttX boots a tiny bit, and prints `123` yay!
 
 ```bash
 ## Boot NuttX from RAM
-$ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
 
 ## Flattened Device Tree blob at 81200000
 Booting using the fdt blob at 0x81200000
@@ -839,15 +845,26 @@ at file: machine/risc-v/arch_elf.c:494
 task: AppBringUp process: Kernel 0x80200f34
 ```
 
-Oops we goofed and used the wrong U-Boot Command. Watch what happens when we use the correct U-Boot Command...
+Oops we goofed and used the wrong U-Boot Command...
+
+```bash
+## Nope! This won't work for NuttX. RAM Disk Address must be `-`!
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ;
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+```
+
+Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command...
 
 # NuttX Kernel Boots OK on SG2000
 
 Here's the correct U-Boot Command...
 
 ```bash
-setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
-tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+## This works OK for NuttX. RAM Disk Address must be `-`!
+setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ;
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; 
+booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
 NuttX Kernel boots OK on SG2000 yay!
