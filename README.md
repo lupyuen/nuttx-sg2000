@@ -831,7 +831,7 @@ dump_stack:   size: 00002000
 dump_stack:     sp: 0x8040c330
 ```
 
-TODO: What's this Assertion Failure?
+_What's this Assertion Failure?_
 
 ```bash
 _assert: Assertion failed 0x17 == (insn & 0x7F):
@@ -839,14 +839,18 @@ at file: machine/risc-v/arch_elf.c:494
 task: AppBringUp process: Kernel 0x80200f34
 ```
 
-# TODO
+Oops we goofed and used the wrong U-Boot Command. Watch what happens when we use the correct U-Boot Command...
 
-TODO: Boot OK yay!
+# NuttX Kernel Boots OK on SG2000
+
+Here's the correct U-Boot Command...
 
 ```bash
 setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
+
+NuttX Kernel boots OK on SG2000 yay!
 
 https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8
 
@@ -871,9 +875,13 @@ nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
 nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 ```
 
-# Dump the SG2000 Linux Device Tree
+_But where's the NuttX Shell?_
 
-TODO
+We won't see the NuttX Shell until we fix the Interrupt Controller for SG2000. Which is NOT documented!
+
+Let's sniff around and find out how it works...
+
+# Dump the SG2000 Linux Device Tree
 
 Let's dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
@@ -895,8 +903,6 @@ dtc \
 ```
 
 # Interrupt Controller for SG2000
-
-TODO
 
 We dumped the SG2000 Linux Device Tree. Let's extract the Interrupt Controller to understand it.
 
@@ -964,7 +970,7 @@ Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd
 	};
 ```
 
-TODO: How to handle interrupts?
+TODO: Fix the PLIC Interrupt Controller in NuttX
 
 # U-Boot Commands for Milk-V Duo S
 
