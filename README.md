@@ -717,16 +717,11 @@ SECTIONS {
 
 # Disable the PLIC Interrupt Controller
 
-Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). But SG2000 uses an 8051 Interrupt Controller? From [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
-
-> __14.3.3 Interrupt Handling:__ 8051 can receive external level-triggered interrupts through the int0_n and int1_n interfaces. int0_n/int1_n selects to 
-output interrupt signals to 8051 from ictl (interrupt control) and configuration register reg_51_int1_src_mask respectively
-
-So let's disable PLIC in NuttX...
+Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). For now, let's disable PLIC in NuttX...
 
 https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
 
-Later we'll dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller.
+Later we'll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
 # Select the NuttX Driver for 16550 UART
 
@@ -848,7 +843,7 @@ task: AppBringUp process: Kernel 0x80200f34
 
 TODO
 
-Let's dump the SG2000 Linux Device Tree to understand the 8051 Interrupt Controller.
+Let's dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
 From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
@@ -867,11 +862,11 @@ dtc \
   cv181x_milkv_duos_sd.dtb
 ```
 
-# 8051 Interrupt Controller for SG2000
+# Interrupt Controller for SG2000
 
 TODO
 
-We dumped the SG2000 Linux Device Tree. Let's extract the 8051 Interrupt Controller to understand it.
+We dumped the SG2000 Linux Device Tree. Let's extract the Interrupt Controller to understand it.
 
 Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd.dts)
 
@@ -937,7 +932,7 @@ Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd
 	};
 ```
 
-TODO: How to handle interrupts with 8051?
+TODO: How to handle interrupts?
 
 # U-Boot Commands for Milk-V Duo S
 
