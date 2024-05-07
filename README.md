@@ -850,6 +850,27 @@ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_
 
 https://gist.github.com/lupyuen/aaa0a6646490d45e5cd99b781cbe59f8
 
+```bash
+## Flattened Device Tree blob at 81200000
+   Booting using the fdt blob at 0x81200000
+   Loading Device Tree to 000000009f26f000, end 000000009f27e43a ... OK
+
+Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80408130
+nxtask_activate: AppBringUp pid=2,TCB=0x80408740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
+nxtask_exit: AppBringUp pid=2,TCB=0x80408740
+```
+
 # Dump the SG2000 Linux Device Tree
 
 TODO
