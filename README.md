@@ -16,6 +16,12 @@ _Is this a sponsored review?_
 
 I was given a Milk-V Duo S, and I bought another. So it cancels out, I guess?
 
+_Why are we doing all this?_
+
+1.  We hear that there will be plenty of interesting new SBCs based on Sophgo SG2000 and SG2002. Perfect for NuttX!
+
+1.  NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let's find the most efficient way to port NuttX to new RISC-V Devices!
+
 # Boot Milk-V Duo S without MicroSD
 
 Connect our USB UART Dongle like so...
