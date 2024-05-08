@@ -68,7 +68,7 @@ https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
 We pick the Latest Release for Milk-V Duo S...
 
-https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
+https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4
 
 ```bash
 $ brew install lz4
@@ -189,23 +189,22 @@ Let's dump the U-Boot Config...
 https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2
 
 ```bash
-U-Boot 2021.10-ga57aa1f2-dirty (Apr 24 2024 - 11:24:46 +0000) cvitek_cv181x
-
+U-Boot 2021.10-ga57aa1f2-dirty (May 07 2024 - 08:13:12 +0000) cvitek_cv181x
 DRAM:  510 MiB
-gd->relocaddr=0x9fbc7000. offset=0x1f9c7000
+gd->relocaddr=0x9fbc6000. offset=0x1f9c6000
 set_rtc_register_for_power
 MMC:   cv-sd@4310000: 0, wifi-sd@4320000: 1
-Loading Environment from nowhere... OK
+Loading Environment from FAT... mmc1 : finished tuning, code:53
+OK
 In:    serial
 Out:   serial
 Err:   serial
 Net:   
-Warning: ethernet@4070000 (eth0) using random MAC address - 82:c2:1a:b2:ee:b5
+Warning: ethernet@4070000 (eth0) using random MAC address - 0a:fa:e9:48:cc:c1
 eth0: ethernet@4070000
 Hit any key to stop autoboot:  0
 
-$ printenv
-
+cv181x_c906# printenv
 arch=riscv
 baudrate=115200
 board=mars
@@ -229,7 +228,7 @@ cpu=generic
 distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
 efi_dtb_prefixes=/ /dtb/ /dtb/current/
 fdt_addr_r=0x81200000
-fdtcontroladdr=9f280810
+fdtcontroladdr=9f27f810
 fdtfile=cv181x_milkv_duos_sd.dtb
 fdtoverlay_addr_r=0x81300000
 gatewayip=192.168.0.11
@@ -243,7 +242,7 @@ netdev=eth0
 netmask=255.255.255.0
 othbootargs=earlycon=sbi riscv.fwsz=0x80000   loglevel=9
 pxefile_addr_r=0x81400000
-ramdisk_addr_r=0x81600000
+ramdisk_addr_r=0x84000000
 root=root=/dev/mmcblk0p2 rootwait rw
 scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;run scan_dev_for_efi;
 scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; then run scan_dev_for_boot; fi; done; setenv devplist
@@ -261,7 +260,6 @@ stdout=serial
 uImage_addr=0x81800000
 update_addr=0x9fe00000
 vendor=cvitek
-
 Environment size: 4333/131068 bytes
 ```
 
@@ -292,9 +290,8 @@ printenv tftp_server
 setenv ramdisk_size 0x1000000
 printenv ramdisk_size
 
-## TODO: saveenv doesn't exist, can't save Environment Variables!
-## TODO: Update the Boot Config in MicroSD instead
-## saveenv
+## Update the Boot Config in MicroSD instead
+saveenv
 
 ## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
@@ -904,7 +901,7 @@ Let's dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
 From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
 
-We pick the Latest Release for Milk-V Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.1.0/duos_sd.img.lz4
+We pick the Latest Release for Milk-V Duo S: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4
 
 We copy out the SG2000 Device Tree Binary: [cv181x_milkv_duos_sd.dtb](cv181x_milkv_duos_sd.dtb)
 
@@ -991,10 +988,12 @@ TODO: Fix the PLIC Interrupt Controller in NuttX
 
 # U-Boot Commands for Milk-V Duo S
 
-Here are the U-Boot Commands available for Milk-V Duo S (which doesn't support writing to Flash Memory)...
+Here are the U-Boot Commands available for Milk-V Duo S...
+
+https://gist.github.com/lupyuen/000b55a46336cddf217a589f469d60e2
 
 ```bash
-$ help
+cv181x_c906# help
 
 ?         - alias for 'help'
 base      - print or set address offset
@@ -1068,10 +1067,12 @@ part      - disk partition related commands
 ping      - send ICMP ECHO_REQUEST to network host
 printenv  - print environment variables
 protect   - enable or disable FLASH write protection
-pxe       - commands to get and boot from pxe
+pxe       - commands to get and boot from pxe files
+random    - fill memory with random pattern
 reset     - Perform RESET of the CPU
 run       - run commands in an environment variable
 save      - save file to a filesystem
+saveenv   - save environment variables to persistent storage
 setenv    - set environment variables
 setexpr   - set environment variable as the result of eval expression
 showvar   - print local hushshell variables
