@@ -1016,7 +1016,9 @@ Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd
 
 We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let's implement this in NuttX...
 
-TODO: Fix the PLIC Interrupt Controller in NuttX
+TODO: Fix the PLIC Interrupt Controller for SG2000
+
+https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5
 
 # U-Boot Commands for Milk-V Duo S
 
