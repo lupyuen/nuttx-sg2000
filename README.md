@@ -284,47 +284,88 @@ We'll port NuttX by booting over TFTP, but let's test TFTP first. Here are the s
 https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp
 
 ```bash
-## Set U-Boot TFTP Server
+## Set the U-Boot TFTP Server
 setenv tftp_server 192.168.31.10
 printenv tftp_server
 
-## Set RAM Disk Size (assume the max)
-setenv ramdisk_size 0x1000000
-printenv ramdisk_size
+## If Initial RAM Disk is needed (like for Linux)...
+## Set the RAM Disk Size (assume the max)
+## setenv ramdisk_size 0x1000000
+## printenv ramdisk_size
 
-## Update the Boot Config in MicroSD instead
+## Save the U-Boot Config for future reboots
 saveenv
+```
 
+We load the NuttX Image over TFTP...
+
+```bash
 ## Fetch the IP Address over DHCP
 ## Load the NuttX Image from TFTP Server
 ## kernel_addr_r=0x80200000
 ## tftp_server=192.168.x.x
-## TODO: Fix the NuttX Image
 dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000
 
 ## Load the Device Tree from TFTP Server
 ## fdt_addr_r=0x81200000
-## TODO: Fix the Device Tree
+## TODO: Fix the Device Tree, it's not needed by NuttX
 tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 
 ## Set the RAM Address of Device Tree
 ## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
 fdt addr ${fdt_addr_r}
 
-## TODO: If Initial RAM Disk is needed...
+## If Initial RAM Disk is needed...
 ## Load the Intial RAM Disk from TFTP Server
 ## ramdisk_addr_r=0x81600000
 ## tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
 
-## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+## Boot the NuttX Image with the Device Tree
 ## kernel_addr_r=0x80200000
-## ramdisk_addr_r=0x81600000
-## ramdisk_size=0x1000000
 ## fdt_addr_r=0x81200000
+## TODO: Fix the Device Tree, it's not needed by NuttX
 booti ${kernel_addr_r} - ${fdt_addr_r}
 
 ## For Linux: We need the RAM Disk Address
+## ramdisk_addr_r=0x81600000
+## ramdisk_size=0x1000000
 ## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+```
+
+Which becomes this, mashed up in a single line...
+
+```bash
+## Boot NuttX Image over TFTP
+dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
+Now we automate the TFTP Booting for future reboots...
+
+```bash
+## Add the Boot Command for TFTP
+setenv bootcmd_tftp 'dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; booti ${kernel_addr_r} - ${fdt_addr_r}'
+## Check that it's correct
+printenv bootcmd_tftp
+## Save it for future reboots
+saveenv
+
+## Test the Boot Command for TFTP, then reboot
+run bootcmd_tftp
+
+## Remember the Original Boot Targets
+setenv orig_boot_targets "$boot_targets"
+## Should show `mmc0 dhcp`
+printenv boot_targets
+## Save it for future reboots
+saveenv
+
+## Add TFTP to the Boot Targets
+setenv boot_targets "$boot_targets tftp"
+## Should show `mmc0 dhcp  tftp`
+printenv boot_targets
+## Save it for future reboots
+saveenv
 ```
 
 _What happens when we run it at the U-Boot Command Prompt?_
@@ -368,17 +409,6 @@ done
 Bytes transferred = 50235 (c43b hex)
 
 $ fdt addr ${fdt_addr_r}
-
-$ tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
-Speed: 100, full duplex
-Using ethernet@4070000 device
-TFTP from server 192.168.31.10; our IP address is 192.168.31.47
-Filename 'initrd'.
-Load address: 0x81600000
-Loading: #################################################################
-. 1.2 MiB/s
-done
-Bytes transferred = 8354816 (7f7c00 hex)
 
 $ booti ${kernel_addr_r} - ${fdt_addr_r}
 ## Flattened Device Tree blob at 81200000
@@ -630,12 +660,6 @@ $ booti ${kernel_addr_r} - ${fdt_addr_r}
 
 ## For Linux: We need the RAM Disk Address
 ## booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
-```
-
-Or in a single line...
-
-```bash
-setenv tftp_server 192.168.31.10 ; dhcp ${kernel_addr_r} ${tftp_server}:Image-sg2000 ; tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; fdt addr ${fdt_addr_r} ; $ booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
 NuttX boots a tiny bit, and prints `123` yay!
