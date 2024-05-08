@@ -1073,6 +1073,39 @@ Duh we set the wrong UART0 IRQ! Here's the fix...
 
 https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
 
+_How did we get IRQ 69 for UART?_
+
+https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
+
+```bash
+CONFIG_16550_UART0_IRQ=69
+```
+
+We saw this in the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
+
+> 3.1 Interrupt Subsystem
+
+> Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz
+
+> Int #44: UART0
+
+Linx Device Tree also says UART0 IRQ is 44 (0x2C)...
+
+```c
+serial@04140000 {
+  compatible = "snps,dw-apb-uart";
+  reg = <0x00 0x4140000 0x00 0x1000>;
+  clock-frequency = <0x17d7840>;
+  reg-shift = <0x02>;
+  reg-io-width = <0x04>;
+  status = "okay";
+  interrupts = <0x2c 0x04>;
+  interrupt-parent = <0x04>;
+};
+```
+
+Thus we compute [NuttX IRQ](https://lupyuen.github.io/articles/plic2#uart-interrupt) = 25 + RISC-V IRQ = 69
+
 # NuttX Shell runs OK on SG2000
 
 TODO: It works yay!
