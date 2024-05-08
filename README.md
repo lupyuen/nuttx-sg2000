@@ -1106,7 +1106,7 @@ Thus we compute [NuttX IRQ](https://lupyuen.github.io/articles/plic2#uart-interr
 
 # NuttX Shell runs OK on SG2000
 
-TODO: It works yay!
+After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!
 
 https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634
 
@@ -1164,6 +1164,10 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 nsh> 
 nsh> 
 ```
+
+NuttX OSTest works great too!
+
+https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f
 
 # U-Boot Commands for Milk-V Duo S
 
