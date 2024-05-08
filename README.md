@@ -1073,13 +1073,11 @@ Duh we set the wrong UART0 IRQ! Here's the fix...
 
 https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
 
-_How did we get IRQ 69 for UART?_
-
-https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
-
 ```bash
 CONFIG_16550_UART0_IRQ=69
 ```
+
+_How did we get IRQ 69 for UART?_
 
 We saw this in the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
 
