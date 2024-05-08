@@ -1016,9 +1016,36 @@ Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd
 
 We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let's implement this in NuttX...
 
-TODO: Fix the PLIC Interrupt Controller for SG2000
+# Fix the PLIC Interrupt Controller for SG2000
+
+Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for SG2000...
+
+https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6
+
+Now we see a bit more NuttX...
 
 https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5
+
+```text
+Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80409130
+nxtask_activate: AppBringUp pid=2,TCB=0x80409740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x80409740
+
+Nuttnx_start: CPU0: Beginning Idle Loop
+```
+
+TODO: Why did it stop? Log the Interrupts
 
 # U-Boot Commands for Milk-V Duo S
 
