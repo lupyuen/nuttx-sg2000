@@ -58,9 +58,7 @@ Nope we're in Arm Mode! Flip the switch back to RISC-V!
 
 https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 
-Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled. Too bad we can't boot NuttX over TFTP, our NuttX Porting will be a bit slower. Bummer :-(
-
-TODO: Get the eMMC Version with U-Boot preinstalled. But flashing the eMMC only works on Windows. Sigh
+Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled in Flash Memory. We'll need U-Boot on MicroSD...
 
 # Boot Linux on Milk-V Duo S
 
@@ -355,14 +353,14 @@ run bootcmd_tftp
 
 ## Remember the Original Boot Targets
 setenv orig_boot_targets "$boot_targets"
-## Should show `mmc0 dhcp`
-printenv boot_targets
+## Should show `mmc0 dhcp pxe`
+printenv orig_boot_targets
 ## Save it for future reboots
 saveenv
 
-## Add TFTP to the Boot Targets
-setenv boot_targets "$boot_targets tftp"
-## Should show `mmc0 dhcp  tftp`
+## Prepend TFTP to the Boot Targets
+setenv boot_targets "tftp $boot_targets"
+## Should show `tftp mmc0 dhcp pxe`
 printenv boot_targets
 ## Save it for future reboots
 saveenv
@@ -684,8 +682,6 @@ Coming up...
 1.  Fix the Boot Address of NuttX, so the rest of NuttX can start
 
 1.  Configure the 16550 UART Driver for NuttX, so can see the Console Output
-
-TODO: Can we auto-boot NuttX over TFTP, without manually typing U-Boot Commands every time? Maybe we change the U-Boot Config on MicroSD?
 
 TODO: Can we run `expect` with `screen` to automate the testing of NuttX on SG2000?
 
