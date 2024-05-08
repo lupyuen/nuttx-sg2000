@@ -1,5 +1,7 @@
 ![RISC-V Sophgo SG2000](https://lupyuen.github.io/images/sg2000-soc.jpg)
 
+[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=pPNDiC5NLqM)
+
 # Apache NuttX RTOS on 64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)
 
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
@@ -888,6 +890,8 @@ elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
 nxtask_activate: /system/bin/init pid=3,TCB=0x80409140
 nxtask_exit: AppBringUp pid=2,TCB=0x80408740
 ```
+
+[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=pPNDiC5NLqM)
 
 _But where's the NuttX Shell?_
 
