@@ -1067,7 +1067,72 @@ nxtask_exit: AppBringUp pid=2,TCB=0x80409740
 Nuttnx_start: CPU0: Beginning Idle Loop
 ```
 
-TODO: Why did it stop? Log the Interrupts
+_Why did it stop?_
+
+Duh we set the wrong UART0 IRQ! Here's the fix...
+
+https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
+
+# NuttX Shell runs OK on SG2000
+
+TODO: It works yay!
+
+https://gist.github.com/lupyuen/b778986ba87c18067cd993b92c673634
+
+```bash
+Starting kernel ...
+
+123ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nxtask_activate: lpwork pid=1,TCB=0x80409130
+nxtask_activate: AppBringUp pid=2,TCB=0x80409740
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nxtask_activate: /system/bin/init pid=3,TCB=0x8040b730
+nxtask_exit: AppBringUp pid=2,TCB=0x80409740
+
+NuttShell (NSH) NuttX-12.4.0
+nsh> nx_start: CPU0: Beginning Idle Loop
+ls
+posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program 'ls': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/:
+ dev/
+ proc/
+ system/
+nsh> 
+nsh> uname -a
+posix_spawn: pid=0xc0202968 path=uname file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program 'uname': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.4.0 122c717 May  8 2024 18:13:30 risc-v ox64
+nsh> 
+nsh> free
+posix_spawn: pid=0xc0202968 path=free file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program 'free': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+                 total       used       free    maxused    maxfree  nused  nfree
+      Kmem:    2065400      14296    2051104      76632    2049392     36      3
+      Page:   20971520     647168   20324352   20324352
+nsh> 
+nsh> ls /dev
+posix_spawn: pid=0xc0202968 path=ls file_actions=0xc0202970 attr=0xc0202978 argv=0xc0202a18
+exec_internal: ERROR: Failed to load program 'ls': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/dev:
+ console
+ null
+ ram0
+ ttyS0
+ zero
+nsh> 
+nsh> 
+```
 
 # U-Boot Commands for Milk-V Duo S
 
