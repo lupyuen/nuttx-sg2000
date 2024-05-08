@@ -770,14 +770,13 @@ CONFIG_16550_REGINCR=4
 CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x04140000
 CONFIG_16550_UART0_CLOCK=23040000
-CONFIG_16550_UART0_IRQ=44
 CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 CONFIG_16550_WAIT_LCR=y
 CONFIG_SERIAL_UART_ARCH_MMIO=y
 ```
 
-Try not to update the NuttX Config File directly! We ran `make menuconfig` to generate the above file...
+Don't update the NuttX Config File directly! We ran `make menuconfig` to generate the above file...
 
 ```bash
 ## Update NuttX Config
@@ -789,7 +788,13 @@ make menuconfig \
 
 To find the menuconfig settings: Press "`/`" and enter  the name of the setting, like "16550_ADDRWIDTH". This ensures that the Kconfig Dependencies are correctly updated.
 
-_How did we get IRQ 44 for UART?_
+_How did we get IRQ 69 for UART?_
+
+https://github.com/lupyuen2/wip-nuttx/commit/122c717447f81c310a4fb082101213ad338dfb0e
+
+```bash
+CONFIG_16550_UART0_IRQ=69
+```
 
 We saw this in the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases)...
 
@@ -798,6 +803,23 @@ We saw this in the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-do
 > Table 3.2: Interrupt number and Interrupt source mapping for Master RISCV C906 @ 1.0Ghz
 
 > Int #44: UART0
+
+Linx Device Tree also says UART0 IRQ is 44 (0x2C)...
+
+```c
+serial@04140000 {
+  compatible = "snps,dw-apb-uart";
+  reg = <0x00 0x4140000 0x00 0x1000>;
+  clock-frequency = <0x17d7840>;
+  reg-shift = <0x02>;
+  reg-io-width = <0x04>;
+  status = "okay";
+  interrupts = <0x2c 0x04>;
+  interrupt-parent = <0x04>;
+};
+```
+
+Thus we compute [NuttX IRQ](https://lupyuen.github.io/articles/plic2#uart-interrupt) = 25 + RISC-V IRQ = 69
 
 TODO: Fix the UART Clock: 16550_UART0_CLOCK
 
@@ -953,65 +975,65 @@ We dumped the SG2000 Linux Device Tree. Let's extract the Interrupt Controller t
 Based on the SG2000 Device Tree: [cv181x_milkv_duos_sd.dts](cv181x_milkv_duos_sd.dts)
 
 ```c
-  cpus {
-    #address-cells = <0x01>;
-    #size-cells = <0x00>;
-    timebase-frequency = <0x17d7840>;
+cpus {
+  #address-cells = <0x01>;
+  #size-cells = <0x00>;
+  timebase-frequency = <0x17d7840>;
 
-    cpu-map {
+  cpu-map {
 
-      cluster0 {
+    cluster0 {
 
-        core0 {
-          cpu = <0x01>;
-        };
-      };
-    };
-
-    cpu@0 {
-      device_type = "cpu";
-      reg = <0x00>;
-      status = "okay";
-      compatible = "riscv";
-      riscv,isa = "rv64imafdvcsu";
-      mmu-type = "riscv,sv39";
-      clock-frequency = <0x17d7840>;
-
-      interrupt-controller {
-        #interrupt-cells = <0x01>;
-        interrupt-controller;
-        compatible = "riscv,cpu-intc";
-        phandle = <0x16>;
+      core0 {
+        cpu = <0x01>;
       };
     };
   };
 
-  soc {
-    #address-cells = <0x02>;
-    #size-cells = <0x02>;
-    compatible = "simple-bus";
-    ranges;
+  cpu@0 {
+    device_type = "cpu";
+    reg = <0x00>;
+    status = "okay";
+    compatible = "riscv";
+    riscv,isa = "rv64imafdvcsu";
+    mmu-type = "riscv,sv39";
+    clock-frequency = <0x17d7840>;
 
-    interrupt-controller@70000000 {
-      riscv,ndev = <0x65>;
-      riscv,max-priority = <0x07>;
-      reg-names = "control";
-      reg = <0x00 0x70000000 0x00 0x4000000>;
-      interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
+    interrupt-controller {
+      #interrupt-cells = <0x01>;
       interrupt-controller;
-      compatible = "riscv,plic0";
-      #interrupt-cells = <0x02>;
-      #address-cells = <0x00>;
-      phandle = <0x04>;
-    };
-
-    clint@74000000 {
-      interrupts-extended = <0x16 0x03 0x16 0x07>;
-      reg = <0x00 0x74000000 0x00 0x10000>;
-      compatible = "riscv,clint0";
-      clint,has-no-64bit-mmio;
+      compatible = "riscv,cpu-intc";
+      phandle = <0x16>;
     };
   };
+};
+
+soc {
+  #address-cells = <0x02>;
+  #size-cells = <0x02>;
+  compatible = "simple-bus";
+  ranges;
+
+  interrupt-controller@70000000 {
+    riscv,ndev = <0x65>;
+    riscv,max-priority = <0x07>;
+    reg-names = "control";
+    reg = <0x00 0x70000000 0x00 0x4000000>;
+    interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
+    interrupt-controller;
+    compatible = "riscv,plic0";
+    #interrupt-cells = <0x02>;
+    #address-cells = <0x00>;
+    phandle = <0x04>;
+  };
+
+  clint@74000000 {
+    interrupts-extended = <0x16 0x03 0x16 0x07>;
+    reg = <0x00 0x74000000 0x00 0x10000>;
+    compatible = "riscv,clint0";
+    clint,has-no-64bit-mmio;
+  };
+};
 ```
 
 We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let's implement this in NuttX...
