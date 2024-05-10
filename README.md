@@ -22,6 +22,12 @@ _Why are we doing all this?_
 
 1.  NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let's find the most efficient way to port NuttX to new RISC-V Devices!
 
+_What's inside Sophgo SG2000 SoC?_
+
+The internals look like this...
+
+![RISC-V Sophgo SG2000](https://lupyuen.github.io/images/sg2000-arch.jpg)
+
 # Boot Milk-V Duo S without MicroSD
 
 Connect our USB UART Dongle like so...
