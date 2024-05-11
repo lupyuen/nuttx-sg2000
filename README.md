@@ -44,7 +44,7 @@ __Sophgo SG2000 SoC__ has a fascinating mix of 64-bit RISC-V Cores (Arm too)...
 
   __Cortex-A53__ _(1.0 GHz)_
 
-Plus a __Low-Power 8051 MCU__ (for wakeup duties) and a __Tensor Processing Unit__ (for image recognition, not LLM)...
+Plus a __Low-Power 8051 MCU__ (for wakeup duties) and a __Tensor Processing Unit__ (for image recognition, not LLM)
 
 ![Sophgo SG2000 RISC-V SoC](https://lupyuen.github.io/images/sg2000-arch.jpg)
 
@@ -54,21 +54,29 @@ Actually there's a __Hardware Switch__ that selects the Main CPU: __RISC-V OR Ar
 
 (Don't let yer pet hamster flip it... It will get super frustrating!)
 
-# Boot Milk-V Duo S without MicroSD
-
-Connect our USB UART Dongle like so...
-
-https://milkv.io/docs/duo/getting-started/duos
-
 ![Milk-V Duo S](https://lupyuen.github.io/images/sg2000-board.jpg)
 
-USB UART Dongle must be [CP2102](http://sun-light.com.sg/index.php?route=product/product&product_id=2367), it doesn't like [CH340G](https://pine64.com/product/serial-console-woodpecker-edition/) 😬
+# Boot Milk-V Duo S without MicroSD
 
-Flip the switch so it's set to "RV" (RISC-V) instead of "Arm"...
+_What happens if we boot Milk-V Duo S? Fresh from the box?_
+
+Connect our __USB UART Dongle__ like so (pic above)...
+
+| Milk-V Duo S | USB UART |
+|:------------:|:--------:|
+| __GND__ (Pin 6)	| __GND__ |
+| __TX__ (Pin 8) |	__RX__ |
+| __RX__ (Pin 10)	| __TX__ |
+
+[(Source)](https://milkv.io/docs/duo/getting-started/duos#uart-serial-console)
+
+USB UART Dongle must be [__CP2102__](http://sun-light.com.sg/index.php?route=product/product&product_id=2367), it doesn't like [__CH340G__](https://pine64.com/product/serial-console-woodpecker-edition/) 😬
+
+Flip the switch so it's set to "__`RV`__" (RISC-V) instead of "__`Arm`__"...
 
 ![Switch to "RV" (RISC-V) instead of "Arm"](https://lupyuen.github.io/images/sg2000-switch.jpg)
 
-Power up via the USB-C Port. We should see in RISC-V Mode...
+Power up the board via the USB-C Port. We should see...
 
 https://gist.github.com/lupyuen/a7c3af98be36dcd5cc5b45f5aadc5d16
 
