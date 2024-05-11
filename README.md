@@ -1,4 +1,4 @@
-![RISC-V Sophgo SG2000](https://lupyuen.github.io/images/sg2000-soc.jpg)
+![64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)](https://lupyuen.github.io/images/sg2000-title.jpg)
 
 [(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=pPNDiC5NLqM)
 
@@ -22,11 +22,37 @@ _Why are we doing all this?_
 
 1.  NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let's find the most efficient way to port NuttX to new RISC-V Devices!
 
-_What's inside Sophgo SG2000 SoC?_
+![Sophgo SG2000 RISC-V SoC](https://lupyuen.github.io/images/sg2000-soc.jpg)
 
-The internals look like this...
+# Sophgo SG2000 RISC-V SoC
 
-![RISC-V Sophgo SG2000](https://lupyuen.github.io/images/sg2000-arch.jpg)
+__Sophgo SG2000 SoC__ has a fascinating mix of 64-bit RISC-V Cores (Arm too)...
+
+- __Main Processor:__ 64-bit RISC-V Core
+
+  __T-Head C906__ _(1.0 GHz)_
+
+  (For NuttX and Linux)
+
+- __Co-Processor:__ 64-bit RISC-V Core
+
+  __T-Head C906__ _(700 MHz)_
+
+  (No Cache)
+
+- __Alt-Main Processor:__ 64-bit Arm Core
+
+  __Cortex-A53__ _(1.0 GHz)_
+
+Plus a __Low-Power 8051 MCU__ (for wakeup duties) and a __Tensor Processing Unit__ (for image recognition, not LLM)...
+
+![Sophgo SG2000 RISC-V SoC](https://lupyuen.github.io/images/sg2000-arch.jpg)
+
+_Whoa RISC-V AND Arm CPUs in a single SoC?_
+
+Actually there's a __Hardware Switch__ that selects the Main CPU: __RISC-V OR Arm__.
+
+(Don't let yer pet hamster flip it... It will get super frustrating!)
 
 # Boot Milk-V Duo S without MicroSD
 
