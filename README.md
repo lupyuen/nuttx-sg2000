@@ -108,13 +108,15 @@ Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled in Flash Memory. W
 
 # Boot Linux on Milk-V Duo S
 
-Let's boot Linux on MicroSD...
+_Milk-V Duo S won't boot without MicroSD. How now?_
 
-https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
+Let's boot __Linux on MicroSD__, thanks to the awesome work by [__Justin Hammond__](https://github.com/Fishwaldo) (Fishwaldo)...
 
-We pick the Latest Release for Milk-V Duo S...
+- [__Debian Images for Sophgo SG2000__](https://github.com/Fishwaldo/sophgo-sg200x-debian/releases)
 
-https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4
+We download the Latest Release for __Milk-V Duo S__ (SG2000)...
+
+- [__duos_sd.img.lz4__](https://github.com/Fishwaldo/sophgo-sg200x-debian/releases/download/v1.2.0/duos_sd.img.lz4)
 
 ```bash
 $ brew install lz4
