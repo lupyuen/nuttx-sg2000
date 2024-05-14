@@ -649,6 +649,8 @@ scp Image tftpserver:/tftpboot/Image-sg2000
 ssh tftpserver ls -l /tftpboot/Image-sg2000
 ```
 
+Build Outputs are here: https://github.com/lupyuen2/wip-nuttx/releases/tag/sg2000-1
+
 We have copied the NuttX Image to our TFTP Server. Let's boot this on Milk-V Duo S...
 
 # Apache NuttX RTOS boots a tiny bit on Milk-V Duo S
@@ -945,9 +947,57 @@ booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
 
 Which overwrites the NuttX Image in RAM. Watch what happens when we use the correct U-Boot Command...
 
+![NuttX Kernel Boots OK on SG2000](https://lupyuen.github.io/images/sg2000-kernel.png)
+
 # NuttX Kernel Boots OK on SG2000
 
-Here's the correct U-Boot Command...
+Earlier we made these fixes...
+
+1.  We set the __NuttX Memory Map__ for SG2000: [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+    ```bash
+    ## Kernel RAM
+    CONFIG_RAM_START=0x80200000
+    CONFIG_RAM_SIZE=1048576
+    ```
+
+1.  Also the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-nuttx/commit/c6c0bd3882a855420acf0d53fa9d37bbd9d125b2#diff-769e7c2389b298f666c84b92f36d3c42fa852fda61dbf20b93e603df98b7bd37)
+
+    ```c
+    MEMORY {
+      kflash (rx) : ORIGIN = 0x80200000, LENGTH = 2048K   /* w/ cache */
+      ...
+    SECTIONS {
+      . = 0x80200000;
+    ```
+
+1.  We select the __NuttX Driver for 16550 UART__: [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/8f8831d15d6ddc913e6dd1c6c49fb0067640f6ec#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+    ```bash
+    CONFIG_16550_REGINCR=4
+    CONFIG_16550_UART0=y
+    CONFIG_16550_UART0_BASE=0x04140000
+    CONFIG_16550_UART0_SERIAL_CONSOLE=y
+    CONFIG_16550_UART=y
+    CONFIG_16550_WAIT_LCR=y
+    CONFIG_SERIAL_UART_ARCH_MMIO=y
+    ```
+
+1.  Enable Logging for __NuttX Scheduler and Binary Loader__: [nsh/defconfig](https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47#diff-fa4b30efe1c5e19ba2fdd2216528406d85fa89bf3d2d0e5161794191c1566078)
+
+    ```bash
+    CONFIG_DEBUG_BINFMT=y
+    CONFIG_DEBUG_BINFMT_ERROR=y
+    CONFIG_DEBUG_BINFMT_WARN=y
+    CONFIG_DEBUG_SCHED=y
+    CONFIG_DEBUG_SCHED_ERROR=y
+    CONFIG_DEBUG_SCHED_INFO=y
+    CONFIG_DEBUG_SCHED_WARN=y
+    ```
+
+1.  And disable the __PLIC Interrupt Controller__ (until we figure it out)
+
+Also we used the correct U-Boot Command...
 
 ```bash
 ## This works OK for NuttX. RAM Disk Address must be `-`!
@@ -1146,7 +1196,42 @@ serial@04140000 {
 
 Thus we compute [NuttX IRQ](https://lupyuen.github.io/articles/plic2#uart-interrupt) = 25 + RISC-V IRQ = 69
 
+![NuttX Shell runs OK](https://lupyuen.github.io/images/sg2000-nsh.png)
+
 # NuttX Shell runs OK on SG2000
+
+Earlier we made these fixes...
+
+1.  We dumped the __Linux Device Tree__ for SG2000...
+
+    ```bash
+    ## Convert the SG2000 Device Tree
+    dtc \
+      -o cv181x_milkv_duos_sd.dts \
+      -O dts \
+      -I dtb \
+      cv181x_milkv_duos_sd.dtb
+    ```
+
+1.  Snooped the __PLIC Interrupt Controller__ in the Device Tree: [cv181x_milkv_duos_sd.dts](https://github.com/lupyuen/nuttx-sg2000/blob/main/cv181x_milkv_duos_sd.dts)
+
+    ```c
+    interrupt-controller@70000000 {
+      riscv,ndev = <0x65>;
+      riscv,max-priority = <0x07>;
+      reg-names = "control";
+      reg = <0x00 0x70000000 0x00 0x4000000>;
+      interrupts-extended = <0x16 0xffffffff 0x16 0x09>;
+      interrupt-controller;
+      compatible = "riscv,plic0";
+    ```
+
+1.  And fixed the __NuttX Driver__ for PLIC Interrupts: [bl808_memorymap.h](https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6#diff-8fffa570a48f8f10004d9da8d4c671d34336f6c4b8dcfc2bd72275d8cda4ac04)
+
+    ```c
+    // Base Address of PLIC Interrupt Controller
+    #define BL808_PLIC_BASE 0x70000000ul
+    ```
 
 After fixing the Interrupt Controller and UART Interrupt: NuttX Kernel now boots all the way to NuttX Shell yay!
 
