@@ -1292,9 +1292,24 @@ nsh>
 nsh> 
 ```
 
-NuttX OSTest works great too!
+_What about the rest of NuttX?_
 
-https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f
+__NuttX OSTest__ is the perfect way to test everything in NuttX...
+
+```bash
+nsh> ostest
+user_main: mutex test
+riscv_exception:
+  EXCEPTION: Load access fault
+  MCAUSE:    5
+  EPC:       802189ce
+  MTVAL:     0000000000000000
+  Segmentation fault in PID 7: ostest
+```
+
+Sadly we're hitting a RISC-V Exception: __Load Access Fault__. Needs more troubleshooting sigh.
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f)
 
 # U-Boot Commands for Milk-V Duo S
 
