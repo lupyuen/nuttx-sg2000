@@ -1136,6 +1136,8 @@ Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for S
 
 https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6
 
+![Platform-Level Interrupt Controller](https://lupyuen.github.io/images/sg2000-plic.jpg)
+
 Now we see a bit more NuttX...
 
 https://gist.github.com/lupyuen/922e6379375fbc5d775d1e83cac4deb5
