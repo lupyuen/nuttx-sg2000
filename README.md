@@ -4,6 +4,10 @@
 
 # Apache NuttX RTOS on 64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
 - [SG2000 Overview](https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/)
@@ -25,6 +29,10 @@ _Why are we doing all this?_
 ![Sophgo SG2000 RISC-V SoC](https://lupyuen.github.io/images/sg2000-soc.jpg)
 
 # Sophgo SG2000 RISC-V SoC
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 __Sophgo SG2000 SoC__ has a fascinating mix of 64-bit RISC-V Cores (Arm too)...
 
@@ -57,6 +65,10 @@ Actually there's a __Hardware Switch__ that selects the Main CPU: __RISC-V OR Ar
 ![Milk-V Duo S](https://lupyuen.github.io/images/sg2000-board.jpg)
 
 # Boot Milk-V Duo S without MicroSD
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 _What happens if we boot Milk-V Duo S? Fresh from the box?_
 
@@ -107,6 +119,10 @@ https://gist.github.com/lupyuen/1d5ba1b2a47c110ee7ff265102b1aae5
 Milk-V Duo S doesn't ship with U-Boot Bootloader preinstalled in Flash Memory. We'll need U-Boot on MicroSD...
 
 # Boot Linux on Milk-V Duo S
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 _Milk-V Duo S won't boot without MicroSD. How now?_
 
@@ -325,6 +341,10 @@ Here's another Linux Image: https://github.com/logicethos/Milk-V_Duo_Linux2SD
 
 # Boot Milk-V Duo S over TFTP 
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 We'll port NuttX by booting over TFTP, but let's test TFTP first. Here are the steps to boot Milk-V Duo S over TFTP...
 
 https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp
@@ -469,6 +489,10 @@ NuttX Kernel hangs, but that's OK! We haven't modified NuttX Kernel for SG2000 y
 
 # UART Controller for SG2000
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 According to the [SG2000 Reference Manual](https://github.com/sophgo/sophgo-doc/releases), the UART Controller Base Addresses are...
 
 | GPIO Module | Base Address |
@@ -491,6 +515,10 @@ Which is supported by NuttX yay!
 Let's modify the NuttX Boot Code to write to the UART Output Register. We'll do this in RISC-V Assembly...
 
 # Print to SG2000 UART in RISC-V Assembly
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 Here's how we print to 8250 UART in RISC-V Assembly...
 
@@ -529,6 +557,10 @@ real_start:
 Which will print `123` when NuttX boots. Let's build and test this!
 
 # Build Apache NuttX RTOS for Milk-V Duo S
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 Follow these steps to build (work-in-progress) Apache NuttX RTOS for SG2000 / Milk-V Duo S...
 
@@ -655,6 +687,10 @@ We have copied the NuttX Image to our TFTP Server. Let's boot this on Milk-V Duo
 
 # Apache NuttX RTOS boots a tiny bit on Milk-V Duo S
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 Earlier we have...
 
 - Inserted the RISC-V Boot Code to print `123` (at NuttX Startup)
@@ -739,6 +775,10 @@ TODO: If we prefer to boot NuttX with MicroSD instead of TFTP, try this [MicroSD
 
 # Set the NuttX Memory Map for SG2000
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 From the U-Boot Bootloader Config above: We see that SG2000 boots at this address...
 
 ```bash
@@ -792,6 +832,10 @@ SECTIONS {
 
 # Disable the PLIC Interrupt Controller
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 Most RISC-V SBCs (Ox64, Star64) will manage Interrupts with a Platform-Level Interrupt Controller (PLIC). For now, let's disable PLIC in NuttX...
 
 https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b93ec4
@@ -799,6 +843,10 @@ https://github.com/lupyuen2/wip-nuttx/commit/6d66caa1408d7a7d7b21b0e876ce32ceb5b
 Later we'll dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
 # Select the NuttX Driver for 16550 UART
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 From the OpenSBI Log above: We see that SG2000 operates with a 8250 UART Controller.
 
@@ -869,6 +917,10 @@ TODO: Fix the UART Clock: 16550_UART0_CLOCK
 
 # Enable Logging for NuttX Scheduler and Binary Loader
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 For easier troubleshooting: We enable the Logging for NuttX Scheduler and Binary Loader...
 
 https://github.com/lupyuen2/wip-nuttx/commit/4cee79630359f6b31fc9fa40f31bb476c8bc4d47
@@ -888,6 +940,10 @@ CONFIG_DEBUG_SCHED_WARN=y
 Remember: Always use `make menuconfig` to update the settings!
 
 # NuttX Crash Dump on SG2000
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 We apply the fixes above. Now NuttX boots some more on RISC-V SG2000 SoC / Milk-V Duo S. And shows our very first NuttX Crash Dump yay!
 
@@ -950,6 +1006,10 @@ Which overwrites the NuttX Image in RAM. Watch what happens when we use the corr
 ![NuttX Kernel Boots OK on SG2000](https://lupyuen.github.io/images/sg2000-kernel.png)
 
 # NuttX Kernel Boots OK on SG2000
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 Earlier we made these fixes...
 
@@ -1041,6 +1101,10 @@ Let's sniff around and find out how it works...
 
 # Dump the SG2000 Linux Device Tree
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 Let's dump the SG2000 Linux Device Tree to understand the Interrupt Controller.
 
 From the SG2000 Debian Release: https://github.com/Fishwaldo/sophgo-sg200x-debian/releases
@@ -1061,6 +1125,10 @@ dtc \
 ```
 
 # Interrupt Controller for SG2000
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 We dumped the SG2000 Linux Device Tree. Let's extract the Interrupt Controller to understand it.
 
@@ -1132,6 +1200,10 @@ We see that PLIC is at 0x7000_0000, CLINT at 0x7400_0000. Let's implement this i
 
 # Fix the PLIC Interrupt Controller for SG2000
 
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
 Based on the PLIC Address from above: We fix the PLIC Interrupt Controller for SG2000...
 
 https://github.com/lupyuen2/wip-nuttx/commit/f5f1aeac36350b8149fc2a77c817217711f082f6
@@ -1201,6 +1273,10 @@ Thus we compute [NuttX IRQ](https://lupyuen.github.io/articles/plic2#uart-interr
 ![NuttX Shell runs OK](https://lupyuen.github.io/images/sg2000-nsh.png)
 
 # NuttX Shell runs OK on SG2000
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 Earlier we made these fixes...
 
@@ -1314,6 +1390,10 @@ Sadly we're hitting a RISC-V Exception: __Load Access Fault__. Needs more troubl
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/fff5242cf77a3f52d81f3effb9aa402f)
 
 # U-Boot Commands for Milk-V Duo S
+
+Read the article...
+
+- ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
 Here are the U-Boot Commands available for Milk-V Duo S...
 
