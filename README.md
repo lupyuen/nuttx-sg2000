@@ -8,6 +8,10 @@ Read the article...
 
 - ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
+__UPDATE:__ We're now upstreaming Sophgo SG2000 and Milk-V Duo S to Apache NuttX Mainline...
+
+- [arch/risc-v: Add support for SOPHGO SG2000 SoC (T-Head C906)](https://github.com/apache/nuttx/pull/12506)
+
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
 - [SG2000 Overview](https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/)
