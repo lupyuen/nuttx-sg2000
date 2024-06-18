@@ -1,0 +1,163 @@
+## Build Mainline NuttX every day for Sophgo SG2000 SoC / Milk-V Duo S SBC
+
+name: Daily Build of NuttX for SG2000
+
+permissions:
+  ## Allow publishing of GitHub Release
+  contents: write
+
+on:
+
+  ## Run every day at 0:00 UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+  ## Run on every commit to this branch
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Install Build Tools
+      run:  |
+        sudo apt -y update
+        sudo apt -y install \
+        bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+        gperf automake libtool pkg-config build-essential gperf genromfs \
+        libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+        libexpat-dev gcc-multilib g++-multilib u-boot-tools util-linux \
+        kconfig-frontends \
+        wget u-boot-tools
+
+    - name: Install Toolchain
+      run:  |
+        wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+        tar -xf xpack-riscv-none-elf-gcc-*.tar.gz
+
+    - name: Checkout Source Files
+      run:  |
+        mkdir nuttx
+        cd nuttx
+        git clone https://github.com/apache/incubator-nuttx nuttx
+        git clone https://github.com/apache/incubator-nuttx-apps apps
+
+    - name: Build
+      run: |
+        ## Add toolchain to PATH
+        export PATH=$PATH:$PWD/xpack-riscv-none-elf-gcc-13.2.0-2/bin
+        cd nuttx/nuttx
+
+        ## Dump the git hash
+        hash1=`git rev-parse HEAD`
+        pushd ../apps
+        hash2=`git rev-parse HEAD`
+        popd
+        echo NuttX Source: https://github.com/apache/nuttx/tree/$hash1 >nuttx.hash
+        echo NuttX Apps: https://github.com/apache/nuttx-apps/tree/$hash2 >>nuttx.hash
+        cat nuttx.hash
+
+        ## Show the GCC version
+        riscv-none-elf-gcc -v
+
+        ## Configure the build
+        tools/configure.sh mlkv_duos:nsh
+
+        ## Preserve the build config
+        cp .config nuttx.config
+
+        ## Run the build
+        make
+
+        ## Build Apps Filesystem
+        make export
+        pushd ../apps
+        ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+        make import
+        popd
+
+        ## Generate Initial RAM Disk
+        genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+
+        ## Prepare a Padding with 64 KB of zeroes
+        head -c 65536 /dev/zero >/tmp/nuttx.pad
+        
+        ## Append Padding and Initial RAM Disk to NuttX Kernel
+        cat nuttx.bin /tmp/nuttx.pad initrd \
+          >Image
+
+        ## Show the size
+        riscv-none-elf-size nuttx
+
+        ## Dump the disassembly to nuttx.S
+        riscv-none-elf-objdump \
+          --syms --source --reloc --demangle --line-numbers --wide \
+          --debugging \
+          nuttx \
+          >nuttx.S \
+          2>&1
+
+        ## Dump the init disassembly to init.S
+        riscv-none-elf-objdump \
+          --syms --source --reloc --demangle --line-numbers --wide \
+          --debugging \
+          ../apps/bin/init \
+          >init.S \
+          2>&1
+
+        ## Dump the hello disassembly to hello.S
+        riscv-none-elf-objdump \
+          --syms --source --reloc --demangle --line-numbers --wide \
+          --debugging \
+          ../apps/bin/hello \
+          >hello.S \
+          2>&1
+
+    - name: Upload Build Outputs as Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: nuttx.zip
+        path: |
+          nuttx/nuttx/nuttx*
+          nuttx/nuttx/initrd
+          nuttx/nuttx/init.S
+          nuttx/nuttx/hello.S
+          nuttx/nuttx/Image
+          nuttx/nuttx/System.map
+
+    - name: Zip Build Outputs for GitHub Release
+      run: |
+        cd nuttx/nuttx
+        zip nuttx.zip nuttx* initrd init.S hello.S Image System.map
+
+    - name: Get Current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Publish the GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: nuttx-sg2000-${{ steps.date.outputs.date }}
+        draft: false
+        prerelease: false
+        generate_release_notes: false
+        files: |
+          nuttx/nuttx/nuttx.zip
+          nuttx/nuttx/nuttx
+          nuttx/nuttx/nuttx.S
+          nuttx/nuttx/nuttx.bin
+          nuttx/nuttx/nuttx.map
+          nuttx/nuttx/nuttx.hex
+          nuttx/nuttx/nuttx.config
+          nuttx/nuttx/nuttx.manifest
+          nuttx/nuttx/nuttx.hash
+          nuttx/nuttx/nuttx-export*
+          nuttx/nuttx/initrd
+          nuttx/nuttx/init.S
+          nuttx/nuttx/hello.S
+          nuttx/nuttx/Image
+          nuttx/nuttx/System.map
