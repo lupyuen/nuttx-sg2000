@@ -65,7 +65,7 @@ jobs:
         riscv-none-elf-gcc -v
 
         ## Configure the build
-        tools/configure.sh mlkv_duos:nsh
+        tools/configure.sh milkv_duos:nsh
 
         ## Preserve the build config
         cp .config nuttx.config
