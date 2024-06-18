@@ -13,8 +13,8 @@ on:
     - cron: '0 0 * * *'
 
   ## Run on every commit to this branch
-  push:
-    branches: [ main ]
+  ## push:
+  ##   branches: [ main ]
 
 jobs:
   build:

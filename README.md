@@ -1,14 +1,16 @@
 ![64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)](https://lupyuen.github.io/images/sg2000-title.jpg)
 
-[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=pPNDiC5NLqM)
+[(Watch the Demo on YouTube)](https://youtu.be/24azql1rzc4?si=rMId8LWVEM4_Wj4D)
 
 # Apache NuttX RTOS on 64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)
+
+[![Daily Build of NuttX for SG2000](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml/badge.svg)](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml)
 
 Read the article...
 
 - ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
 
-__UPDATE:__ We're now upstreaming Sophgo SG2000 and Milk-V Duo S to Apache NuttX Mainline...
+__UPDATE:__ Apache NuttX RTOS Mainline now officially supports Sophgo SG2000 and Milk-V Duo S! 🎉
 
 - [arch/risc-v: Add support for SOPHGO SG2000 SoC (T-Head C906)](https://github.com/apache/nuttx/pull/12506)
 
@@ -33,6 +35,43 @@ _Why are we doing all this?_
 1.  NuttX has been ported from QEMU RISC-V to Star64 JH7110 to Ox64 BL808 and now Sophgo SG2000. Let's find the most efficient way to port NuttX to new RISC-V Devices!
 
 ![Sophgo SG2000 RISC-V SoC](https://lupyuen.github.io/images/sg2000-soc.jpg)
+
+# NuttX Automated Daily Build for SG2000
+
+NuttX for SG2000 is now built automatically every day via GitHub Actions.
+
+The Daily Releases are available here...
+
+- [nuttx-sg2000/releases](https://github.com/lupyuen/nuttx-sg2000/releases)
+
+[nuttx.hash](https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-2024-06-18/nuttx.hash) contains the Commit Hash of the NuttX Kernel and NuttX Apps repos...
+
+```text
+NuttX Source: https://github.com/apache/nuttx/tree/28ae3b38499c6c7bac0d432658da263b9eab2981
+NuttX Apps: https://github.com/apache/nuttx-apps/tree/00f98947786892eaabf60b2e61fad553aee1c36c
+```
+
+The GitHub Actions Workflow is here...
+
+- [sg2000.yml](https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml)
+
+To run the NuttX Daily Build on our SBC...
+1.  Download the `Image` file from the Daily Build
+1.  Copy the `Image` file to our TFTP Server as `Image-sg2000`
+1.  Boot our SBC over TFTP
+
+Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator...
+
+- ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
+
+Or with our Real SBC...
+
+1.  Download the Daily Build to TFTP Server
+1.  Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
+1.  Our SBC boots the Daily Build over TFTP
+1.  Capture the Automated Testing Log and write to the Release Notes
+
+[(Similar to BL602)](https://lupyuen.github.io/articles/auto)
 
 # Sophgo SG2000 RISC-V SoC
 
