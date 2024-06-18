@@ -64,14 +64,16 @@ Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator...
 
 - ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
 
-Or with our Real SBC...
+We are now running Daily Automated Testing of NuttX on a Real Milk-V Duo S...
 
 1.  Download the Daily Build to TFTP Server
-1.  Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
+1.  TODO: Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
 1.  Our SBC boots the Daily Build over TFTP
 1.  Capture the Automated Testing Log and write to the Release Notes
 
-[(Similar to BL602)](https://lupyuen.github.io/articles/auto)
+Here's the Automated Testing Script...
+
+- [lupyuen2/autotest-nuttx-sg2000](https://github.com/lupyuen2/autotest-nuttx-sg2000)
 
 # Sophgo SG2000 RISC-V SoC
 
