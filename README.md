@@ -55,25 +55,22 @@ The GitHub Actions Workflow is here...
 
 - [sg2000.yml](https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000.yml)
 
-To run the NuttX Daily Build on our SBC...
-1.  Download the `Image` file from the Daily Build
-1.  Copy the `Image` file to our TFTP Server as `Image-sg2000`
-1.  Boot our SBC over TFTP
-
-Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator...
-
-- ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
-
-We are now running Daily Automated Testing of NuttX on a Real Milk-V Duo S...
+We are now running Daily Automated Testing of NuttX on a Real Milk-V Duo S SBC...
 
 1.  Download the Daily Build to TFTP Server
 1.  TODO: Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
 1.  Our SBC boots the Daily Build over TFTP
 1.  Capture the Automated Testing Log and write to the Release Notes
 
+[(See the Automated Test Logs)](https://github.com/lupyuen/nuttx-sg2000/releases)
+
 Here's the Automated Testing Script...
 
 - [lupyuen2/autotest-nuttx-sg2000](https://github.com/lupyuen2/autotest-nuttx-sg2000)
+
+Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator...
+
+- ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
 
 # Sophgo SG2000 RISC-V SoC
 
