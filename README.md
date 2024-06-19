@@ -68,7 +68,9 @@ Here's the Automated Testing Script...
 
 - [lupyuen2/autotest-nuttx-sg2000](https://github.com/lupyuen2/autotest-nuttx-sg2000)
 
-Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator...
+Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator (in GitHub Actions)...
+
+- ["Emulate Sophgo SG2000 SoC / Milk-V Duo S SBC with TinyEMU RISC-V Emulator"](https://github.com/lupyuen2/sg2000-emulator)
 
 - ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
 
