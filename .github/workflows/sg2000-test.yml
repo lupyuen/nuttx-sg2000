@@ -1,0 +1,58 @@
+## Test Mainline NuttX every day for Sophgo SG2000 SoC / Milk-V Duo S SBC
+
+name: Daily Test of NuttX for SG2000
+
+permissions:
+  ## Allow publishing of GitHub Release
+  contents: write
+
+on:
+
+  ## Run every day at 0:55 UTC
+  schedule:
+    - cron: '55 0 * * *'
+
+  ## Run on every commit to this branch
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Get Current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Install Build Tools
+      run:  |
+        sudo apt -y update
+        sudo apt -y install \
+        expect libcurl4-openssl-dev libssl-dev zlib1g-dev libsdl2-dev wget
+
+    - name: Checkout Source Files
+      run:  |
+        git clone https://github.com/lupyuen2/sg2000-emulator
+
+    - name: Build SG2000 Emulator
+      run: |
+        cd sg2000-emulator
+        make
+        cp temu ..
+
+    - name: Download NuttX Build and Test Script
+      run: |
+        wget https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-${{ steps.date.outputs.date }}/Image
+        wget https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-${{ steps.date.outputs.date }}/nuttx.hash
+        wget https://github.com/lupyuen/nuttx-sg2000/raw/main/nuttx.cfg
+        wget https://github.com/lupyuen/nuttx-sg2000/raw/main/nuttx.exp
+        chmod +x nuttx.exp
+        ls -l
+        cat nuttx.hash
+
+    - name: Run Test
+      run: |
+        ./nuttx.exp
