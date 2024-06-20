@@ -1,0 +1,48 @@
+#!/usr/bin/expect
+## Expect Script for Testing NuttX with SG2000 Emulator
+
+## Wait at most 300 seconds
+set timeout 300
+
+## For every 1 character sent, wait 0.001 milliseconds
+set send_slow {1 0.001}
+
+## Start the SG2000 Emulator
+spawn ./temu nuttx.cfg
+
+## Wait for the prompt and enter `uname -a`
+expect "nsh> "
+send -s "uname -a\r"
+
+## Wait for the prompt and enter `free`
+expect "nsh> "
+send -s "free\r"
+
+## Wait for the prompt and enter `hello`
+expect "nsh> "
+send -s "hello\r"
+
+## Wait for the prompt and enter `getprime`
+expect "nsh> "
+send -s "getprime\r"
+
+## Wait for the prompt and enter `hello`
+expect "nsh> "
+send -s "hello\r"
+
+## Wait for the prompt and enter `getprime`
+expect "nsh> "
+send -s "getprime\r"
+
+## Wait for the prompt and enter `ostest`
+expect "nsh> "
+send -s "ostest\r"
+
+## Check the response...
+expect {
+  ## If we see this message, exit normally
+  "ostest_main: Exiting with status 0" { exit 0 }
+
+  ## If timeout, exit with an error
+  timeout { exit 1 }
+}
