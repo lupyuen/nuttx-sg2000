@@ -4,8 +4,8 @@
 ## Wait at most 300 seconds
 set timeout 300
 
-## For every 1 character sent, wait 0.001 milliseconds
-set send_slow {1 0.001}
+## For every 1 character sent, wait 0.01 milliseconds
+set send_slow {1 0.01}
 
 ## Start the SG2000 Emulator
 spawn ./temu nuttx.cfg
