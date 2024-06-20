@@ -5,6 +5,7 @@
 # Apache NuttX RTOS on 64-bit RISC-V Sophgo SG2000 (T-Head C906 / Milk-V Duo S)
 
 [![Daily Build of NuttX for SG2000](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml/badge.svg)](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml)
+[![Daily Test of NuttX for SG2000](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml/badge.svg)](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml)
 
 Read the article...
 
@@ -54,21 +55,24 @@ The GitHub Actions Workflow is here...
 We are now running Daily Automated Testing of NuttX on a Real Milk-V Duo S SBC...
 
 1.  Download the Daily Build to TFTP Server
+
 1.  TODO: Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
+
 1.  Our SBC boots the Daily Build over TFTP
+
 1.  Capture the Automated Testing Log and write to the Release Notes
 
-[(See the Automated Test Logs)](https://github.com/lupyuen/nuttx-sg2000/releases)
+    [(See the Automated Test Logs)](https://github.com/lupyuen/nuttx-sg2000/releases)
 
-Here's the Automated Testing Script...
+    [(See the Automated Test Script)](https://github.com/lupyuen2/autotest-nuttx-sg2000)
 
-- [lupyuen2/autotest-nuttx-sg2000](https://github.com/lupyuen2/autotest-nuttx-sg2000)
+We are also running Daily Automated Testing with an SG2000 Emulator (in GitHub Actions)...
 
-Maybe someday we'll do Daily Automated Testing with an SG2000 Emulator (in GitHub Actions)...
+- [See the Automated Test Logs](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml)
+
+- [See the GitHub Actions Workflow](https://github.com/lupyuen/nuttx-sg2000/blob/main/.github/workflows/sg2000-test.yml)
 
 - ["Emulate Sophgo SG2000 SoC / Milk-V Duo S SBC with TinyEMU RISC-V Emulator"](https://github.com/lupyuen2/sg2000-emulator)
-
-- ["Emulate Ox64 BL808 SBC with TinyEMU"](https://github.com/lupyuen/nuttx-tinyemu#emulate-ox64-bl808-sbc-with-tinyemu)
 
 # Sophgo SG2000 RISC-V SoC
 
