@@ -56,7 +56,7 @@ We are now running Daily Automated Testing of NuttX on a Real Milk-V Duo S SBC..
 
 1.  Download the Daily Build to TFTP Server
 
-1.  Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://lupyuen.github.io/articles/tftp#whats-next)
+1.  Power on our SBC with an [IKEA Smart Power Plug via Home Assistant](https://github.com/lupyuen2/autotest-nuttx-sg2000#control-our-sbc-with-an-ikea-smart-power-plug-and-home-assistant)
 
 1.  Our SBC boots the Daily Build over TFTP
 
