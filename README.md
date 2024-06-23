@@ -7,9 +7,11 @@
 [![Daily Build of NuttX for SG2000](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml/badge.svg)](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000.yml)
 [![Daily Test of NuttX for SG2000](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml/badge.svg)](https://github.com/lupyuen/nuttx-sg2000/actions/workflows/sg2000-test.yml)
 
-Read the article...
+Read the articles...
 
 - ["Apache NuttX RTOS on Sophgo SG2000 RISC-V SoC (Milk-V Duo S SBC)"](https://lupyuen.github.io/articles/sg2000)
+
+- ["Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)"](https://lupyuen.github.io/articles/sg2000a)
 
 [__UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!__](https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000)
 
