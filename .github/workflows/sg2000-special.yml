@@ -43,7 +43,11 @@ jobs:
       run:  |
         mkdir nuttx
         cd nuttx
-        git clone https://github.com/apache/incubator-nuttx nuttx
+        git clone \
+          https://github.com/no1wudi/nuttx \
+          --branch master \
+          nuttx
+        ## git clone https://github.com/apache/incubator-nuttx nuttx
         git clone https://github.com/apache/incubator-nuttx-apps apps
 
     - name: Build
