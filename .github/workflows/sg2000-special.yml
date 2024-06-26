@@ -122,7 +122,7 @@ jobs:
           2>&1
 
     - name: Upload Build Outputs as Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: nuttx.zip
         path: |
