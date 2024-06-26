@@ -23,6 +23,28 @@ jobs:
 
     steps:
 
+    - name: Checkout Source Files
+      run:  |
+        ## TODO: Paste the GitHub Repo and Branch
+        source=https://github.com/apache/nuttx/tree/main
+
+        ## Match `https://github.com/user/repo/tree/branch`
+        pattern='\(.*\)\/tree\/\(.*\)'
+
+        ## `url` becomes `https://github.com/user/repo`
+        ## `branch` becomes `branch`
+        url=`echo $source | sed "s/$pattern/\1/"`
+        branch=`echo $source | sed "s/$pattern/\2/"`
+
+        ## Check out the `url` and `branch`
+        mkdir nuttx
+        cd nuttx
+        git clone \
+          $url \
+          --branch $branch \
+          nuttx
+        git clone https://github.com/apache/nuttx-apps apps
+
     - name: Install Build Tools
       run:  |
         sudo apt -y update
@@ -38,17 +60,6 @@ jobs:
       run:  |
         wget --no-check-certificate https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
         tar -xf xpack-riscv-none-elf-gcc-*.tar.gz
-
-    - name: Checkout Source Files
-      run:  |
-        mkdir nuttx
-        cd nuttx
-        git clone \
-          https://github.com/apache/nuttx \
-          --branch master \
-          nuttx
-        ## git clone https://github.com/apache/nuttx nuttx
-        git clone https://github.com/apache/nuttx-apps apps
 
     - name: Build
       run: |
