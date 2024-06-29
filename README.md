@@ -21,6 +21,10 @@ __UPDATE:__ Sophgo SG2000 is officially supported by NuttX Mainline! (Including 
 
 - ["NuttX for Pine64 Oz64"](https://lupyuen.github.io/articles/sg2000#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc)
 
+Here's how everything got started...
+
+<hr>
+
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
 - [SG2000 Overview](https://www.cnx-software.com/2024/02/07/sophgo-sg2000-sg2002-ai-soc-features-risc-v-arm-8051-cores-android-linux-freertos/)
