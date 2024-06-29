@@ -13,7 +13,13 @@ Read the articles...
 
 - ["Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)"](https://lupyuen.github.io/articles/sg2000a)
 
-[__UPDATE: NuttX Mainline now supports SG2000 and Milk-V Duo S!__](https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000)
+__UPDATE:__ Sophgo SG2000 is officially supported by NuttX Mainline! (Including Milk-V Duo S and Pine64 Oz64)
+
+- ["NuttX Mainline now supports SG2000"](https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000)
+
+- ["NuttX for Milk-V Duo S"](https://nuttx.apache.org/docs/latest/platforms/risc-v/sg2000/boards/milkv_duos/index.html)
+
+- ["NuttX for Pine64 Oz64"](https://lupyuen.github.io/articles/sg2000#appendix-apache-nuttx-rtos-for-pine64-oz64-sbc)
 
 64-bit RISC-V Sophgo SG2000 SoC ... Will it boot Apache NuttX RTOS? 🤔 (T-Head C906 / Milk-V Duo S)
 
