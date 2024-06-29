@@ -51,7 +51,9 @@ NuttX for SG2000 is now built automatically every day via GitHub Actions.
 
 The Daily Releases are available here...
 
-- [nuttx-sg2000/releases](https://github.com/lupyuen/nuttx-sg2000/releases)
+- [nuttx-sg2000/releases](https://github.com/lupyuen/nuttx-sg2000/tags)
+
+  (Skip the Special Builds)
 
 [nuttx.hash](https://github.com/lupyuen/nuttx-sg2000/releases/download/nuttx-sg2000-2024-06-18/nuttx.hash) contains the Commit Hash of the NuttX Kernel and NuttX Apps repos...
 
