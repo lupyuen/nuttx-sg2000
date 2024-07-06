@@ -13,6 +13,8 @@ Read the articles...
 
 - ["Daily Automated Testing for Milk-V Duo S RISC-V SBC (IKEA TRETAKT / Apache NuttX RTOS)"](https://lupyuen.github.io/articles/sg2000a)
 
+- ["RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)"](https://lupyuen.github.io/articles/sg2000b)
+
 __UPDATE:__ Sophgo SG2000 is officially supported by NuttX Mainline! (Including Milk-V Duo S and Pine64 Oz64)
 
 - ["NuttX Mainline now supports SG2000"](https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000)
