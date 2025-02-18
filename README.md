@@ -15,6 +15,8 @@ Read the articles...
 
 - ["RISC-V Emulator for Sophgo SG2000 SoC (Pine64 Oz64 / Milk-V Duo S)"](https://lupyuen.github.io/articles/sg2000b)
 
+- ["Test Bot for Pull Requests ... Tested on Real Hardware (Apache NuttX RTOS / Oz64 SG2000 RISC-V SBC)"](https://lupyuen.org/articles/testbot.html)
+
 __UPDATE:__ Sophgo SG2000 is officially supported by NuttX Mainline! (Including Milk-V Duo S and Pine64 Oz64)
 
 - ["NuttX Mainline now supports SG2000"](https://lupyuen.github.io/articles/sg2000#appendix-nuttx-mainline-now-supports-sg2000)
